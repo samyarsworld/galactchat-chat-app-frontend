@@ -1,7 +1,11 @@
-import React, {useState} from 'react';
-import { Link } from 'react-router-dom';
-import { useDispatch } from "react-redux";
+import React, {useState, useEffect} from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from "react-redux";
+import { useAlert } from "react-alert";
+import { ERROR_CLEAR, SUCCESS_MESSAGE_CLEAR } from '../store/actionTypes/authType';
+
 import { userRegister } from '../store/actions/authAction';
+
 
 const initialState = {
     username : '',
@@ -13,15 +17,33 @@ const initialState = {
 
 const Register = () => {
 
+  const navigate = useNavigate();
+  const alert = useAlert();
+
+  const { loading, authenticate, error, successMessage, myInfo } = useSelector(state => state.auth);
   const dispatch = useDispatch();
 
   const [state, setState] = useState(initialState);
   const [loadImage, setLoadImage] = useState('');
 
+  useEffect(() => {
+    if (authenticate){
+          navigate('/');
+    }
+    if (successMessage){
+          alert.success(successMessage);
+          dispatch({type : SUCCESS_MESSAGE_CLEAR });
+    }
+    if (error){
+          error.map(err => alert.error(err));
+          dispatch({type : ERROR_CLEAR });
+    }
+  },[successMessage, error]);
+
+
   
   const handleChange = (e) => {
     setState({...state, [e.target.name]: e.target.value});
-    console.log(state);
   }
 
   const handleFile = (e) => {
@@ -90,7 +112,7 @@ const Register = () => {
               <input type="submit" value="register" className='btn' />
             </div>
             <div className='form-group'>
-              <span><Link to="/messenger/login"> Login Your Account </Link></span>
+              <span><Link to="/galactchat/login"> Login Your Account </Link></span>
             </div>  
           </form> 
         </div>
