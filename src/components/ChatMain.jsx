@@ -1,12 +1,19 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FaEllipsisH, FaEdit, FaSistrix } from "react-icons/fa";
 import ActiveFriend from "./ActiveFriend";
 import Friends from "./Friends";
-import MessageArea from "./MessageArea";
+import ChatArea from "./ChatArea";
 import { useDispatch, useSelector } from "react-redux";
-import { getFriends } from "../store/actions/chatAction";
+import {
+  getFriends,
+  messageSend,
+  messageGet,
+} from "../store/actions/chatAction";
 
-const Messenger = () => {
+const ChatMain = () => {
+  const [currentFriend, setCurrentFriend] = useState("");
+  const [newMessage, setNewMessage] = useState("");
+
   const dispatch = useDispatch();
 
   const { friends } = useSelector((state) => state.chat);
@@ -15,6 +22,28 @@ const Messenger = () => {
   useEffect(() => {
     dispatch(getFriends());
   }, []);
+
+  const newMessageHandler = (e) => {
+    setNewMessage(e.target.value);
+  };
+
+  const sendMessage = (e) => {
+    e.preventDefault();
+    const data = {
+      senderName: myInfo.username,
+      receiverId: currentFriend._id,
+      message: newMessage ? newMessage : "❤",
+    };
+    dispatch(messageSend(data));
+  };
+
+  useEffect(() => {
+    if (friends && friends.length > 0) setCurrentFriend(friends[0]);
+  }, [friends]);
+
+  useEffect(() => {
+    dispatch(messageGet(currentFriend._id));
+  }, [currentFriend?._id]);
 
   return (
     <div className="messenger">
@@ -62,18 +91,31 @@ const Messenger = () => {
             <div className="friends">
               {friends && friends.length > 0
                 ? friends.map((fd) => (
-                    <div className="hover-friend">
-                      <Friends friend={fd} key={fd.id} />
+                    <div
+                      className={
+                        currentFriend._id === fd._id
+                          ? "hover-friend active"
+                          : "hover-friend"
+                      }
+                      key={fd._id}
+                      onClick={() => setCurrentFriend(fd)}
+                    >
+                      <Friends friend={fd} />
                     </div>
                   ))
                 : "No Friend"}
             </div>
           </div>
         </div>
-        <MessageArea />
+        <ChatArea
+          currentFriend={currentFriend}
+          newMessage={newMessage}
+          newMessageHandler={newMessageHandler}
+          sendMessage={sendMessage}
+        />
       </div>
     </div>
   );
 };
 
-export default Messenger;
+export default ChatMain;

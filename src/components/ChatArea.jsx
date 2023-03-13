@@ -4,7 +4,12 @@ import Message from "./Message";
 import SendMessage from "./SendMessage";
 import FriendInfo from "./FriendInfo";
 
-const MessageArea = () => {
+const MessageArea = ({
+  currentFriend,
+  newMessage,
+  newMessageHandler,
+  sendMessage,
+}) => {
   return (
     <div className="col-9">
       <div className="right-side">
@@ -15,10 +20,10 @@ const MessageArea = () => {
               <div className="header">
                 <div className="image-name">
                   <div className="image">
-                    <img src={`./images/`} alt="" />
+                    <img src={`./images/${currentFriend.image}`} alt="" />
                   </div>
                   <div className="name">
-                    <h3> sam </h3>
+                    <h3>{currentFriend.username} </h3>
                   </div>
                 </div>
 
@@ -39,13 +44,17 @@ const MessageArea = () => {
                 </div>
               </div>
               <Message />
-              <SendMessage />
+              <SendMessage
+                newMessage={newMessage}
+                newMessageHandler={newMessageHandler}
+                sendMessage={sendMessage}
+              />
             </div>
           </div>
 
           <div className="col-4">
             User About Page
-            <FriendInfo />
+            <FriendInfo currentFriend={currentFriend} />
           </div>
         </div>
       </div>
