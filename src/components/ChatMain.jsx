@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { FaEllipsisH, FaEdit, FaSistrix } from "react-icons/fa";
 import ActiveFriend from "./ActiveFriend";
 import Friends from "./Friends";
@@ -8,16 +8,18 @@ import {
   getFriends,
   messageSend,
   messageGet,
+  sendImageMessage,
 } from "../store/actions/chatAction";
 
 const ChatMain = () => {
   const [currentFriend, setCurrentFriend] = useState("");
   const [newMessage, setNewMessage] = useState("");
 
+  const scrollRef = useRef();
   const dispatch = useDispatch();
 
-  const { friends } = useSelector((state) => state.chat);
-  const { myInfo } = useSelector((state) => state.auth);
+  const { friends, messages } = useSelector((state) => state.chat);
+  const { currentUserInfo } = useSelector((state) => state.auth);
 
   useEffect(() => {
     dispatch(getFriends());
@@ -30,11 +32,14 @@ const ChatMain = () => {
   const sendMessage = (e) => {
     e.preventDefault();
     const data = {
-      senderName: myInfo.username,
+      senderName: currentUserInfo.username,
       receiverId: currentFriend._id,
-      message: newMessage ? newMessage : "❤",
+      message: newMessage ? newMessage : "no message",
     };
+
     dispatch(messageSend(data));
+
+    setNewMessage("");
   };
 
   useEffect(() => {
@@ -45,6 +50,28 @@ const ChatMain = () => {
     dispatch(messageGet(currentFriend._id));
   }, [currentFriend?._id]);
 
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  const sendEmoji = (e) => {
+    setNewMessage(`${newMessage}` + e);
+  };
+  const sendImage = (e) => {
+    if (e.target.files.length !== 0) {
+      const imageName = e.target.files[0].name;
+      const newImageName = Date.now() + imageName;
+
+      const formData = new FormData();
+
+      formData.append("senderName", currentUserInfo.username);
+      formData.append("imageName", newImageName);
+      formData.append("receiverId", currentFriend._id);
+      formData.append("image", e.target.files[0]);
+      dispatch(sendImageMessage(formData));
+    }
+  };
+
   return (
     <div className="messenger">
       <div className="row">
@@ -53,10 +80,10 @@ const ChatMain = () => {
             <div className="top">
               <div className="image-name">
                 <div className="image">
-                  <img src={`./images/${myInfo.image}`} alt="" />
+                  <img src={`./images/${currentUserInfo.image}`} alt="" />
                 </div>
                 <div className="name">
-                  <h3>{myInfo.username} </h3>
+                  <h3>{currentUserInfo.username} </h3>
                 </div>
               </div>
 
@@ -73,8 +100,7 @@ const ChatMain = () => {
             <div className="friend-search">
               <div className="search">
                 <button>
-                  {" "}
-                  <FaSistrix />{" "}
+                  <FaSistrix />
                 </button>
                 <input
                   type="text"
@@ -100,7 +126,7 @@ const ChatMain = () => {
                       key={fd._id}
                       onClick={() => setCurrentFriend(fd)}
                     >
-                      <Friends friend={fd} />
+                      <Friends friend={fd} key={fd._id} />
                     </div>
                   ))
                 : "No Friend"}
@@ -112,6 +138,10 @@ const ChatMain = () => {
           newMessage={newMessage}
           newMessageHandler={newMessageHandler}
           sendMessage={sendMessage}
+          messages={messages}
+          scrollRef={scrollRef}
+          sendEmoji={sendEmoji}
+          sendImage={sendImage}
         />
       </div>
     </div>

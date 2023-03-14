@@ -12,9 +12,8 @@ import { userLogin } from "../store/actions/authAction";
 const Login = () => {
   const navigate = useNavigate();
   const alert = useAlert();
-  const { loading, authenticate, error, successMessage, myInfo } = useSelector(
-    (state) => state.auth
-  );
+  const { loading, authenticate, error, successMessage, currentUserInfo } =
+    useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const [state, setState] = useState({

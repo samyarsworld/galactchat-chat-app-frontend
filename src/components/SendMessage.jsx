@@ -6,7 +6,13 @@ import {
   FaPaperPlane,
 } from "react-icons/fa";
 
-const SendMessage = ({ newMessage, newMessageHandler, sendMessage }) => {
+const SendMessage = ({
+  newMessage,
+  newMessageHandler,
+  sendMessage,
+  sendEmoji,
+  sendImage,
+}) => {
   const emojis = [
     "😀",
     "😄",
@@ -34,15 +40,20 @@ const SendMessage = ({ newMessage, newMessageHandler, sendMessage }) => {
     <div className="message-send-section">
       <input type="checkbox" id="emoji" />
       <div className="file hover-attachment">
-        <div className="add-attachment">Add Attachment</div>
+        <div className="add-attachment">Add attachment</div>
         <FaPlusCircle />
       </div>
 
       <div className="file hover-image">
-        <div className="add-image">Add Image</div>
+        <div className="add-image">Add image</div>
+        <input
+          onChange={sendImage}
+          type="file"
+          id="pic"
+          className="form-control"
+        />
         <label htmlFor="pic">
-          {" "}
-          <FaFileImage />{" "}
+          <FaFileImage />
         </label>
       </div>
 
@@ -63,18 +74,20 @@ const SendMessage = ({ newMessage, newMessageHandler, sendMessage }) => {
         />
 
         <div className="file hover-gift">
-          <label htmlFor="emoji">
-            <FaPaperPlane onClick={sendMessage} />
-          </label>
+          <FaPaperPlane onClick={sendMessage} />
         </div>
       </div>
 
-      <div className="file">❤</div>
+      <div className="file">
+        <label htmlFor="emoji">❤</label>
+      </div>
 
       <div className="emoji-section">
         <div className="emoji">
           {emojis.map((e) => (
-            <span>{e}</span>
+            <span key={e} onClick={() => sendEmoji(e)}>
+              {e}
+            </span>
           ))}
         </div>
       </div>

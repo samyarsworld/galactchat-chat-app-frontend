@@ -11,7 +11,7 @@ const Friends = ({ friend }) => {
 
       <div className="friend-name-seen">
         <div className="friend-name">
-          <h4>{friend.userame}</h4>
+          <h4>{friend.username}</h4>
         </div>
       </div>
     </div>

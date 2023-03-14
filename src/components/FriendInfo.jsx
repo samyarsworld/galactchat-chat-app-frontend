@@ -30,18 +30,12 @@ const FriendInfo = ({ currentFriend }) => {
         <div className="media">
           <h3>Shared Media </h3>
           <label htmlFor="gallery">
-            {" "}
-            <FaSistrix />{" "}
+            <FaSistrix />
           </label>
         </div>
       </div>
 
-      <div className="gallery">
-        <img src="/image/.jpg" alt="" />
-        <img src="/image/.jpg" alt="" />
-        <img src="/image/.jpg" alt="" />
-        <img src="/image/.jpg" alt="" />
-      </div>
+      <div className="gallery"></div>
     </div>
   );
 };
