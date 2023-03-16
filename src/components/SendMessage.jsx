@@ -35,7 +35,11 @@ const SendMessage = ({
     "🥴",
     "😱",
   ];
-
+  function handleInputKeyPress(event) {
+    if (event.key === "Enter") {
+      sendMessage(event);
+    }
+  }
   return (
     <div className="message-send-section">
       <input type="checkbox" id="emoji" />
@@ -71,6 +75,7 @@ const SendMessage = ({
           id="message"
           placeholder="Aa"
           className="form-control"
+          onKeyPress={handleInputKeyPress}
         />
 
         <div className="file hover-gift">

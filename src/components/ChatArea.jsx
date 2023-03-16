@@ -13,6 +13,8 @@ const MessageArea = ({
   scrollRef,
   sendEmoji,
   sendImage,
+  activeUser,
+  typingMessage,
 }) => {
   return (
     <div className="col-9">
@@ -51,6 +53,7 @@ const MessageArea = ({
                 messages={messages}
                 currentFriend={currentFriend}
                 scrollRef={scrollRef}
+                typingMessage={typingMessage}
               />
               <SendMessage
                 newMessage={newMessage}
@@ -63,7 +66,7 @@ const MessageArea = ({
           </div>
 
           <div className="col-4">
-            <FriendInfo currentFriend={currentFriend} />
+            <FriendInfo currentFriend={currentFriend} activeUser={activeUser} />
           </div>
         </div>
       </div>

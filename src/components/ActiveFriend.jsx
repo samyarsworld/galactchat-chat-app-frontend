@@ -1,11 +1,22 @@
 import React from "react";
 
-const ActiveFriend = () => {
+const ActiveFriend = ({ user, setCurrentFriend }) => {
   return (
-    <div className="active-friend">
+    <div
+      onClick={() =>
+        setCurrentFriend({
+          _id: user.userInfo.id,
+          email: user.userInfo.email,
+          image: user.userInfo.image,
+          username: user.userInfo.username,
+        })
+      }
+      style={{ cursor: "pointer" }}
+      className="active-friend"
+    >
       <div className="image-active-icon">
         <div className="image">
-          {/* <img src="/images/56219temple.png" alt="" /> */}
+          <img src={`./images/${user.userInfo.image}`} alt="" />
           <div className="active-icon"></div>
         </div>
       </div>

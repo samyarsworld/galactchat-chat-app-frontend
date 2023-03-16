@@ -12,16 +12,19 @@ import { userLogin } from "../store/actions/authAction";
 const Login = () => {
   const navigate = useNavigate();
   const alert = useAlert();
-  const { loading, authenticate, error, successMessage, currentUserInfo } =
-    useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
+  const { loading, authenticate, error, successMessage, currentUserInfo } =
+    useSelector((state) => state.auth);
+
+  console.log(authenticate);
   const [state, setState] = useState({
     email: "",
     password: "",
   });
 
   useEffect(() => {
+    console.log(error);
     if (authenticate) {
       navigate("/");
     }
@@ -42,6 +45,9 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(userLogin(state));
+    if (authenticate) {
+      navigate("/");
+    }
   };
 
   return (
@@ -80,7 +86,7 @@ const Login = () => {
             </div>
             <div className="form-group">
               <span>
-                <Link to="/galactchat/register"> Don't have any Account </Link>
+                <Link to="/galactchat/register"> Don't have an account? </Link>
               </span>
             </div>
           </form>

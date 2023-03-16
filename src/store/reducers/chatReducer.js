@@ -21,6 +21,7 @@ export const chatReducer = (state = chatState, action) => {
         messages: payload.messages,
       };
     case actions.MESSAGE_SEND_SUCCESS:
+    case actions.SOCKET_MESSAGE:
       return {
         ...state,
         messages: [...state.messages, payload.message],
