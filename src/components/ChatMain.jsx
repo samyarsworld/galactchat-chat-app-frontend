@@ -4,8 +4,8 @@ import toast, { Toaster } from "react-hot-toast";
 import { io } from "socket.io-client";
 
 import useSound from "use-sound";
-import notificationSound from "../../public/audio/notification.mp3";
-import sendingSound from "../../public/audio/sending.mp3";
+import notificationSound from "../audio/notification.mp3";
+import sendingSound from "../audio/sending.mp3";
 
 import { FaEllipsisH, FaEdit, FaSistrix } from "react-icons/fa";
 import ActiveFriend from "./ActiveFriend";
@@ -94,7 +94,7 @@ const ChatMain = () => {
   }, []);
 
   useEffect(() => {
-    if (friends && friends.length > 0) setCurrentFriend(friends[0]);
+    if (friends && friends.length > 0) setCurrentFriend(friends[0].friendInfo);
   }, [friends]);
 
   // Getting the previous messages between the current friend
@@ -254,17 +254,17 @@ const ChatMain = () => {
 
             <div className="friends">
               {friends && friends.length > 0
-                ? friends.map((fd) => (
+                ? friends.map((friend) => (
                     <div
                       className={
-                        currentFriend._id === fd._id
+                        currentFriend._id === friend.friendInfo._id
                           ? "hover-friend active"
                           : "hover-friend"
                       }
-                      key={fd._id}
-                      onClick={() => setCurrentFriend(fd)}
+                      key={friend.friendInfo._id}
+                      onClick={() => setCurrentFriend(friend.friendInfo)}
                     >
-                      <Friends friend={fd} key={fd._id} />
+                      <Friends friend={friend} />
                     </div>
                   ))
                 : "No Friend"}
