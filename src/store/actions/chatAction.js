@@ -48,10 +48,28 @@ export const sendImageMessage = (data) => async (dispatch) => {
     dispatch({
       type: MESSAGE_SEND_SUCCESS,
       payload: {
-        messages: response.data.messages,
+        message: response.data.message,
       },
     });
   } catch (error) {
     console.log(error.response.data);
+  }
+};
+
+export const seenMessage = (message) => async (dispatch) => {
+  try {
+    const response = await axios.post("/api/chat/seen-message", message);
+    console.log(response.data);
+  } catch (error) {
+    console.log(error.response.message);
+  }
+};
+
+export const updateMessage = (message) => async (dispatch) => {
+  try {
+    const response = await axios.post("/api/chat/delivered-message", message);
+    console.log(response.data);
+  } catch (error) {
+    console.log(error.response.message);
   }
 };

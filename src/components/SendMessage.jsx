@@ -79,12 +79,12 @@ const SendMessage = ({
         />
 
         <div className="file hover-gift">
-          <FaPaperPlane onClick={sendMessage} />
+          <label htmlFor="emoji">❤</label>
         </div>
       </div>
 
-      <div className="file">
-        <label htmlFor="emoji">❤</label>
+      <div onClick={sendMessage} className="file">
+        <FaPaperPlane />
       </div>
 
       <div className="emoji-section">

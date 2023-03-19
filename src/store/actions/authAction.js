@@ -79,7 +79,9 @@ const userLogout = () => async (dispatch) => {
         type: LOGOUT_SUCCESS,
       });
     }
-  } catch (error) {}
+  } catch (error) {
+    console.log(error.response.data);
+  }
 };
 
 export { userRegister, userLogin, userLogout };

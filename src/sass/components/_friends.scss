@@ -7,6 +7,9 @@
   &::-webkit-scrollbar {
     display: none;
   }
+  small {
+    color: grey;
+  }
   .hover-friend.active {
     background-color: var(--active-color);
   }
@@ -78,14 +81,14 @@
             border-radius: 50%;
           }
           .unseen,
-          .delivared {
+          .delivered {
             color: var(--text-color);
           }
           .seen-icon {
             width: 15px;
             height: 15px;
             border-radius: 50%;
-            background-color: aquamarine;
+            background-color: rgb(51, 234, 173);
           }
         }
       }

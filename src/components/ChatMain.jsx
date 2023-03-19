@@ -7,8 +7,7 @@ import useSound from "use-sound";
 import notificationSound from "../audio/notification.mp3";
 import sendingSound from "../audio/sending.mp3";
 
-import { FaEllipsisH, FaEdit, FaSistrix } from "react-icons/fa";
-import ActiveFriend from "./ActiveFriend";
+import { FaEllipsisH, FaEdit, FaSistrix, FaSignOutAlt } from "react-icons/fa";
 import Friends from "./Friends";
 import ChatArea from "./ChatArea";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,16 +16,21 @@ import {
   messageSend,
   messageGet,
   sendImageMessage,
+  seenMessage,
+  updateMessage,
 } from "../store/actions/chatAction";
+import { userLogout } from "../store/actions/authAction";
 
 const ChatMain = () => {
   const [currentFriend, setCurrentFriend] = useState("");
   const [newMessage, setNewMessage] = useState("");
-  const [activeUser, setActiveUser] = useState([]);
+  const [onlineFriends, setOnlineFriends] = useState([]);
   const [socketMessage, setSocketMessage] = useState("");
   const [typingMessage, setTypingMessage] = useState("");
+  const [hide, setHide] = useState(true);
 
-  const { friends, messages } = useSelector((state) => state.chat);
+  const { friends, messages, messageSuccess, message_get_success } =
+    useSelector((state) => state.chat);
   const { currentUserInfo, authenticate } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
@@ -40,11 +44,40 @@ const ChatMain = () => {
   // Socket setup
   useEffect(() => {
     socket.current = io("ws://localhost:8000");
+
+    // Show real time messages
     socket.current.on("getMessage", (data) => {
       setSocketMessage(data);
     });
+
+    // Show real time typing
     socket.current.on("getTypingMessage", (data) => {
       setTypingMessage(data);
+    });
+
+    socket.current.on("messageDeliveredResponse", (message) => {
+      dispatch({
+        type: "DELIVERED_MESSAGE",
+        payload: {
+          messageInfo: message,
+        },
+      });
+    });
+
+    socket.current.on("messageSeenResponse", (message) => {
+      dispatch({
+        type: "SEEN_MESSAGE",
+        payload: {
+          messageInfo: message,
+        },
+      });
+    });
+
+    socket.current.on("seenSuccess", (data) => {
+      dispatch({
+        type: "SEEN_ALL",
+        payload: data,
+      });
     });
   }, []);
 
@@ -54,10 +87,10 @@ const ChatMain = () => {
 
   useEffect(() => {
     socket.current.on("getUser", (users) => {
-      const filterUser = users.filter(
+      const filteredUsers = users.filter(
         (user) => user.userId !== currentUserInfo.id
       );
-      setActiveUser(filterUser);
+      setOnlineFriends(filteredUsers);
     });
   }, []);
 
@@ -73,6 +106,15 @@ const ChatMain = () => {
             message: socketMessage,
           },
         });
+        dispatch(seenMessage(socketMessage));
+        socket.current.emit("messageSeen", socketMessage);
+        dispatch({
+          type: "UPDATE_LAST_MESSAGE",
+          payload: {
+            messageInfo: socketMessage,
+            status: "seen",
+          },
+        });
       }
     }
     setSocketMessage("");
@@ -84,7 +126,17 @@ const ChatMain = () => {
       socketMessage.senderId !== currentFriend._id &&
       socketMessage.receiverId === currentUserInfo.id
     ) {
+      notifySound();
       toast.success(`New message from ${socketMessage.senderName}`);
+      dispatch(updateMessage(socketMessage));
+      socket.current.emit("messageDelivered", socketMessage);
+      dispatch({
+        type: "UPDATE_LAST_MESSAGE",
+        payload: {
+          messageInfo: socketMessage,
+          status: "delivered",
+        },
+      });
     }
   }, [socketMessage]);
 
@@ -128,16 +180,6 @@ const ChatMain = () => {
         message: newMessage,
       };
 
-      socket.current.emit("sendMessage", {
-        ...data,
-        senderId: currentUserInfo.id,
-        time: new Date(),
-        message: {
-          text: newMessage,
-          image: "",
-        },
-      });
-
       socket.current.emit("typingMessage", {
         senderId: currentUserInfo.id,
         receiverId: currentFriend._id,
@@ -148,6 +190,48 @@ const ChatMain = () => {
       setNewMessage("");
     }
   };
+
+  // Complete get and send message through socket
+  useEffect(() => {
+    if (messageSuccess) {
+      socket.current.emit("sendMessage", messages[messages.length - 1]);
+
+      dispatch({
+        type: "UPDATE_LAST_MESSAGE",
+        payload: {
+          messageInfo: messages[messages.length - 1],
+          status: "unseen",
+        },
+      });
+      dispatch({
+        type: "MESSAGE_SEND_SUCCESS_CLEAR",
+      });
+    }
+  }, [messageSuccess]);
+
+  useEffect(() => {
+    if (messages.length > 0) {
+      if (
+        messages[messages.length - 1].senderId !== currentUserInfo.id &&
+        messages[messages.length - 1].status !== "seen"
+      ) {
+        dispatch({
+          type: "UPDATE_SEEN",
+          payload: {
+            id: currentFriend._id,
+          },
+        });
+        socket.current.emit("seen", {
+          senderId: currentFriend._id,
+          receiverId: currentUserInfo.id,
+        });
+        dispatch(seenMessage({ _id: messages[messages.length - 1]._id }));
+      }
+    }
+    dispatch({
+      type: "MESSAGE_GET_SUCCESS_CLEAR",
+    });
+  }, [message_get_success]);
 
   // Add emoji to message
   const sendEmoji = (e) => {
@@ -188,9 +272,29 @@ const ChatMain = () => {
     }
   };
 
-  if (!authenticate) {
-    navigate("/galactchat/login");
-  }
+  const search = (e) => {
+    const getFriendClass = document.getElementsByClassName("hover-friend");
+    const frienNameClass = document.getElementsByClassName("Fd_name");
+    for (var i = 0; i < getFriendClass.length, i < frienNameClass.length; i++) {
+      let text = frienNameClass[i].innerText.toLowerCase();
+      if (text.indexOf(e.target.value.toLowerCase()) > -1) {
+        getFriendClass[i].style.display = "";
+      } else {
+        getFriendClass[i].style.display = "none";
+      }
+    }
+  };
+
+  const logout = () => {
+    dispatch(userLogout());
+    socket.current.emit("logout", currentUserInfo.id);
+  };
+
+  useEffect(() => {
+    if (!authenticate) {
+      navigate("/galactchat/login");
+    }
+  });
 
   return (
     <div className="messenger">
@@ -217,12 +321,17 @@ const ChatMain = () => {
                 </div>
               </div>
 
-              <div className="icons">
+              <div onClick={() => setHide(!hide)} className="icons">
                 <div className="icon">
                   <FaEllipsisH />
                 </div>
                 <div className="icon">
                   <FaEdit />
+                </div>
+                <div className={hide ? "theme_logout" : "theme_logout show"}>
+                  <div onClick={logout} className="logout">
+                    <FaSignOutAlt /> Logout
+                  </div>
                 </div>
               </div>
             </div>
@@ -234,22 +343,11 @@ const ChatMain = () => {
                 </button>
                 <input
                   type="text"
+                  onChange={search}
                   placeholder="Search"
                   className="form-control"
                 />
               </div>
-            </div>
-
-            <div className="active-friends">
-              {activeUser && activeUser.length > 0
-                ? activeUser.map((user) => (
-                    <ActiveFriend
-                      user={user}
-                      setCurrentFriend={setCurrentFriend}
-                      key={user.userId}
-                    />
-                  ))
-                : ""}
             </div>
 
             <div className="friends">
@@ -264,7 +362,11 @@ const ChatMain = () => {
                       key={friend.friendInfo._id}
                       onClick={() => setCurrentFriend(friend.friendInfo)}
                     >
-                      <Friends friend={friend} />
+                      <Friends
+                        friend={friend}
+                        currentUserInfo={currentUserInfo}
+                        onlineFriends={onlineFriends}
+                      />
                     </div>
                   ))
                 : "No Friend"}
@@ -280,7 +382,7 @@ const ChatMain = () => {
           scrollRef={scrollRef}
           sendEmoji={sendEmoji}
           sendImage={sendImage}
-          activeUser={activeUser}
+          onlineFriends={onlineFriends}
           typingMessage={typingMessage}
         />
       </div>

@@ -13,7 +13,7 @@ const MessageArea = ({
   scrollRef,
   sendEmoji,
   sendImage,
-  activeUser,
+  onlineFriends,
   typingMessage,
 }) => {
   return (
@@ -66,7 +66,11 @@ const MessageArea = ({
           </div>
 
           <div className="col-4">
-            <FriendInfo currentFriend={currentFriend} activeUser={activeUser} />
+            <FriendInfo
+              currentFriend={currentFriend}
+              onlineFriends={onlineFriends}
+              messages={messages}
+            />
           </div>
         </div>
       </div>

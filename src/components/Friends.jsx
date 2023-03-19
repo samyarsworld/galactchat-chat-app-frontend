@@ -1,22 +1,100 @@
 import React from "react";
-// import moment from "moment";
+import moment from "moment";
+import { FaRegCheckCircle } from "react-icons/fa";
 
-const Friends = ({ friend }) => {
+const Friends = ({ friend, currentUserInfo, onlineFriends }) => {
+  const { friendInfo, lastMessageInfo } = friend;
   return (
     <div className="friend">
       <div className="friend-image">
         <div className="image">
-          <img src={`./images/${friend.friendInfo.image}`} alt="" />
+          <img src={`./images/${friendInfo.image}`} alt="" />
+          {onlineFriends &&
+          onlineFriends.length > 0 &&
+          onlineFriends.some((friend) => friend.userId === friendInfo._id) ? (
+            <div className="active_icon"></div>
+          ) : (
+            ""
+          )}
         </div>
       </div>
 
       <div className="friend-name-seen">
         <div className="friend-name">
-          <h4>{friend.friendInfo.username}</h4>
-          <small style={{ color: "grey" }}>
-            {friend.lastMessage.slice(0, 10)}
-          </small>
+          <h4
+            className={
+              lastMessageInfo?.senderId !== currentUserInfo.id &&
+              lastMessageInfo?.status !== undefined &&
+              lastMessageInfo.status !== "seen"
+                ? "unseen_message Fd_name "
+                : "Fd_name"
+            }
+          >
+            {friendInfo.username}
+          </h4>
+          <div className="msg-time">
+            {lastMessageInfo &&
+            lastMessageInfo.senderId === currentUserInfo.id ? (
+              <small>You: </small>
+            ) : (
+              <small
+                className={
+                  lastMessageInfo?.senderId !== currentUserInfo.id &&
+                  lastMessageInfo?.status !== undefined &&
+                  lastMessageInfo.status !== "seen"
+                    ? "unseen_message "
+                    : ""
+                }
+              >
+                {friendInfo.username + ": "}
+              </small>
+            )}
+            {lastMessageInfo && lastMessageInfo.message.text ? (
+              <small
+                className={
+                  lastMessageInfo?.senderId !== currentUserInfo.id &&
+                  lastMessageInfo?.status !== undefined &&
+                  lastMessageInfo.status !== "seen"
+                    ? "unseen_message "
+                    : ""
+                }
+              >
+                {lastMessageInfo.message.text.slice(0, 10)}
+              </small>
+            ) : lastMessageInfo && lastMessageInfo.message.image ? (
+              <small>Send A image </small>
+            ) : (
+              <small>Connect You </small>
+            )}
+            <small>
+              {lastMessageInfo
+                ? moment(lastMessageInfo.createdAt).startOf("mini").fromNow()
+                : moment(friendInfo.createdAt).startOf("mini").fromNow()}
+            </small>
+          </div>
         </div>
+        {currentUserInfo.id === lastMessageInfo?.senderId ? (
+          <div className="seen-unseen-icon">
+            {lastMessageInfo.status === "seen" ? (
+              <img src={`./images/${friendInfo.image}`} alt="" />
+            ) : lastMessageInfo.status === "delivered" ? (
+              <div className="delivered">
+                <FaRegCheckCircle />
+              </div>
+            ) : (
+              <div className="unseen"> </div>
+            )}
+          </div>
+        ) : (
+          <div className="seen-unseen-icon">
+            {lastMessageInfo?.status !== undefined &&
+            lastMessageInfo?.status !== "seen" ? (
+              <div className="seen-icon"> </div>
+            ) : (
+              ""
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

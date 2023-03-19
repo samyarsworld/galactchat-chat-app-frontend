@@ -1,5 +1,6 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import PrivateRoute from "./components/PrivateRoute";
 
 import Login from "./components/Login";
 import Register from "./components/Register";
@@ -12,7 +13,15 @@ function App() {
         <Routes>
           <Route path="/galactchat/login" element={<Login />} />
           <Route path="/galactchat/register" element={<Register />} />
-          <Route path="/" element={<ChatMain />} />
+
+          <Route
+            path="/"
+            element={
+              <PrivateRoute>
+                <ChatMain />
+              </PrivateRoute>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </div>

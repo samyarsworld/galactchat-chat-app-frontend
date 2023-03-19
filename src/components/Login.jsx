@@ -17,14 +17,12 @@ const Login = () => {
   const { loading, authenticate, error, successMessage, currentUserInfo } =
     useSelector((state) => state.auth);
 
-  console.log(authenticate);
   const [state, setState] = useState({
     email: "",
     password: "",
   });
 
   useEffect(() => {
-    console.log(error);
     if (authenticate) {
       navigate("/");
     }
