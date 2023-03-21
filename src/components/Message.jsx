@@ -4,14 +4,14 @@ import moment from "moment";
 import { FaRegCheckCircle } from "react-icons/fa";
 
 const Message = ({ messages, currentFriend, scrollRef, typingMessage }) => {
-  const { currentUserInfo } = useSelector((state) => state.auth);
+  const { userInfo } = useSelector((state) => state.auth);
 
   return (
     <>
       <div className="message-show">
         {messages && messages.length > 0 ? (
           messages.map((message, index) =>
-            message.senderId === currentUserInfo.id ? (
+            message.senderId === userInfo.id ? (
               <div className="my-message" ref={scrollRef} key={message._id}>
                 <div className="image-message">
                   <div className="my-text">
@@ -26,7 +26,7 @@ const Message = ({ messages, currentFriend, scrollRef, typingMessage }) => {
                       )}
                     </p>
                     {index === messages.length - 1 &&
-                    message.senderId === currentUserInfo.id ? (
+                    message.senderId === userInfo.id ? (
                       message.status === "seen" ? (
                         <img
                           className="img"

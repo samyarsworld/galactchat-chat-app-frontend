@@ -14,8 +14,7 @@ const Login = () => {
   const alert = useAlert();
   const dispatch = useDispatch();
 
-  const { loading, authenticate, error, successMessage, currentUserInfo } =
-    useSelector((state) => state.auth);
+  const { authenticate, error, userInfo } = useSelector((state) => state.auth);
 
   const [state, setState] = useState({
     email: "",
@@ -26,15 +25,11 @@ const Login = () => {
     if (authenticate) {
       navigate("/");
     }
-    if (successMessage) {
-      alert.success(successMessage);
-      dispatch({ type: SUCCESS_MESSAGE_CLEAR });
-    }
     if (error) {
       error.map((err) => alert.error(err));
       dispatch({ type: ERROR_CLEAR });
     }
-  }, [successMessage, error]);
+  }, [error, authenticate]);
 
   const handleChange = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });

@@ -31,7 +31,7 @@ const ChatMain = () => {
 
   const { friends, messages, messageSuccess, message_get_success } =
     useSelector((state) => state.chat);
-  const { currentUserInfo, authenticate } = useSelector((state) => state.auth);
+  const { userInfo, authenticate } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
   const scrollRef = useRef();
@@ -43,18 +43,23 @@ const ChatMain = () => {
 
   // Socket setup
   useEffect(() => {
+    // Define the socket inside our useRef mutable object and give the socket port
     socket.current = io("ws://localhost:8000");
 
-    // Show real time messages
+    // Adding current user to the online users
+    socket.current.emit("addUser", userInfo.id, userInfo);
+
+    // Get real time messages through socket
     socket.current.on("getMessage", (data) => {
       setSocketMessage(data);
     });
 
-    // Show real time typing
+    // Get if a friend is typing through socket
     socket.current.on("getTypingMessage", (data) => {
       setTypingMessage(data);
     });
 
+    // Update delivery icon of messages upon message sennkhjbjbkjnjknjk through socket
     socket.current.on("messageDeliveredResponse", (message) => {
       dispatch({
         type: "DELIVERED_MESSAGE",
@@ -64,6 +69,7 @@ const ChatMain = () => {
       });
     });
 
+    // Update seen icon of messages upon message b   kn mmjn kj through socket
     socket.current.on("messageSeenResponse", (message) => {
       dispatch({
         type: "SEEN_MESSAGE",
@@ -73,6 +79,7 @@ const ChatMain = () => {
       });
     });
 
+    // Update delivery icon of messages upon mehjkbhjbjh through socket
     socket.current.on("seenSuccess", (data) => {
       dispatch({
         type: "SEEN_ALL",
@@ -81,24 +88,40 @@ const ChatMain = () => {
     });
   }, []);
 
+  // Get all online friends through socket
   useEffect(() => {
-    socket.current.emit("addUser", currentUserInfo.id, currentUserInfo);
-  }, []);
-
-  useEffect(() => {
-    socket.current.on("getUser", (users) => {
-      const filteredUsers = users.filter(
-        (user) => user.userId !== currentUserInfo.id
-      );
+    socket.current.on("getOnlineUsers", (users) => {
+      const filteredUsers = users.filter((user) => user.userId !== userInfo.id);
       setOnlineFriends(filteredUsers);
     });
   }, []);
+
+  // Get all friends through backend
+  useEffect(() => {
+    dispatch(getFriends());
+  }, []);
+
+  // Show "a" friend's chat if no friend is chosen through backend
+  useEffect(() => {
+    if (friends && friends.length > 0 && !currentFriend)
+      setCurrentFriend(friends[0].friendInfo);
+  }, [friends]);
+
+  // Getting all the previous messages between the current friend and user through backend
+  useEffect(() => {
+    dispatch(messageGet(currentFriend._id));
+  }, [currentFriend?._id]);
+
+  // Adjusting the scroll to see new messages
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   useEffect(() => {
     if (socketMessage && currentFriend) {
       if (
         socketMessage.senderId === currentFriend._id &&
-        socketMessage.receiverId === currentUserInfo.id
+        socketMessage.receiverId === userInfo.id
       ) {
         dispatch({
           type: "SOCKET_MESSAGE",
@@ -124,7 +147,7 @@ const ChatMain = () => {
     if (
       socketMessage &&
       socketMessage.senderId !== currentFriend._id &&
-      socketMessage.receiverId === currentUserInfo.id
+      socketMessage.receiverId === userInfo.id
     ) {
       notifySound();
       toast.success(`New message from ${socketMessage.senderName}`);
@@ -140,52 +163,37 @@ const ChatMain = () => {
     }
   }, [socketMessage]);
 
-  // Showing friends
-  useEffect(() => {
-    dispatch(getFriends());
-  }, []);
-
-  useEffect(() => {
-    if (friends && friends.length > 0) setCurrentFriend(friends[0].friendInfo);
-  }, [friends]);
-
-  // Getting the previous messages between the current friend
-  useEffect(() => {
-    dispatch(messageGet(currentFriend._id));
-  }, [currentFriend?._id]);
-
-  // Show new messages on the screen
-  useEffect(() => {
-    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
-
-  // Setting input message in the state
+  // Set input message in the state
   const newMessageHandler = (e) => {
     setNewMessage(e.target.value);
+
+    // Send you are typing to the friend through socket
     socket.current.emit("typingMessage", {
-      senderId: currentUserInfo.id,
+      senderId: userInfo.id,
       receiverId: currentFriend._id,
       message: e.target.value,
     });
   };
 
-  // Sending message to database
+  // Send message
   const sendMessage = (e) => {
     e.preventDefault();
     sendSound();
     if (newMessage) {
       const data = {
-        senderName: currentUserInfo.username,
+        senderName: userInfo.username,
         receiverId: currentFriend._id,
         message: newMessage,
       };
 
+      // Send typing message is over to the friend through socket
       socket.current.emit("typingMessage", {
-        senderId: currentUserInfo.id,
+        senderId: userInfo.id,
         receiverId: currentFriend._id,
         message: "",
       });
 
+      // Send new message through the backend
       dispatch(messageSend(data));
       setNewMessage("");
     }
@@ -212,7 +220,7 @@ const ChatMain = () => {
   useEffect(() => {
     if (messages.length > 0) {
       if (
-        messages[messages.length - 1].senderId !== currentUserInfo.id &&
+        messages[messages.length - 1].senderId !== userInfo.id &&
         messages[messages.length - 1].status !== "seen"
       ) {
         dispatch({
@@ -223,7 +231,7 @@ const ChatMain = () => {
         });
         socket.current.emit("seen", {
           senderId: currentFriend._id,
-          receiverId: currentUserInfo.id,
+          receiverId: userInfo.id,
         });
         dispatch(seenMessage({ _id: messages[messages.length - 1]._id }));
       }
@@ -237,7 +245,7 @@ const ChatMain = () => {
   const sendEmoji = (e) => {
     setNewMessage(`${newMessage}` + e);
     socket.current.emit("typingMessage", {
-      senderId: currentUserInfo.id,
+      senderId: userInfo.id,
       receiverId: currentFriend._id,
       message: e,
     });
@@ -252,8 +260,8 @@ const ChatMain = () => {
       const newImageName = Date.now() + imageName;
 
       socket.current.emit("sendMessage", {
-        senderId: currentUserInfo.id,
-        senderName: currentUserInfo.username,
+        senderId: userInfo.id,
+        senderName: userInfo.username,
         receiverId: currentFriend._id,
         time: new Date(),
         message: {
@@ -264,7 +272,7 @@ const ChatMain = () => {
 
       const formData = new FormData();
 
-      formData.append("senderName", currentUserInfo.username);
+      formData.append("senderName", userInfo.username);
       formData.append("imageName", newImageName);
       formData.append("receiverId", currentFriend._id);
       formData.append("image", e.target.files[0]);
@@ -272,6 +280,7 @@ const ChatMain = () => {
     }
   };
 
+  // Functions
   const search = (e) => {
     const getFriendClass = document.getElementsByClassName("hover-friend");
     const frienNameClass = document.getElementsByClassName("Fd_name");
@@ -287,14 +296,8 @@ const ChatMain = () => {
 
   const logout = () => {
     dispatch(userLogout());
-    socket.current.emit("logout", currentUserInfo.id);
+    socket.current.emit("logout");
   };
-
-  useEffect(() => {
-    if (!authenticate) {
-      navigate("/galactchat/login");
-    }
-  });
 
   return (
     <div className="messenger">
@@ -314,15 +317,15 @@ const ChatMain = () => {
             <div className="top">
               <div className="image-name">
                 <div className="image">
-                  <img src={`./images/${currentUserInfo.image}`} alt="" />
+                  <img src={`./images/${userInfo.image}`} alt="" />
                 </div>
                 <div className="name">
-                  <h3>{currentUserInfo.username} </h3>
+                  <h3>{userInfo.username} </h3>
                 </div>
               </div>
 
-              <div onClick={() => setHide(!hide)} className="icons">
-                <div className="icon">
+              <div className="icons">
+                <div onClick={() => setHide(!hide)} className="icon">
                   <FaEllipsisH />
                 </div>
                 <div className="icon">
@@ -330,7 +333,7 @@ const ChatMain = () => {
                 </div>
                 <div className={hide ? "theme_logout" : "theme_logout show"}>
                   <div onClick={logout} className="logout">
-                    <FaSignOutAlt /> Logout
+                    <FaSignOutAlt style={{ marginRight: "4px" }} /> Logout
                   </div>
                 </div>
               </div>
@@ -364,7 +367,7 @@ const ChatMain = () => {
                     >
                       <Friends
                         friend={friend}
-                        currentUserInfo={currentUserInfo}
+                        userInfo={userInfo}
                         onlineFriends={onlineFriends}
                       />
                     </div>

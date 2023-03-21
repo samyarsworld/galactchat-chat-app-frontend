@@ -2,7 +2,7 @@ import React from "react";
 import moment from "moment";
 import { FaRegCheckCircle } from "react-icons/fa";
 
-const Friends = ({ friend, currentUserInfo, onlineFriends }) => {
+const Friends = ({ friend, userInfo, onlineFriends }) => {
   const { friendInfo, lastMessageInfo } = friend;
   return (
     <div className="friend">
@@ -23,7 +23,7 @@ const Friends = ({ friend, currentUserInfo, onlineFriends }) => {
         <div className="friend-name">
           <h4
             className={
-              lastMessageInfo?.senderId !== currentUserInfo.id &&
+              lastMessageInfo?.senderId !== userInfo.id &&
               lastMessageInfo?.status !== undefined &&
               lastMessageInfo.status !== "seen"
                 ? "unseen_message Fd_name "
@@ -33,13 +33,12 @@ const Friends = ({ friend, currentUserInfo, onlineFriends }) => {
             {friendInfo.username}
           </h4>
           <div className="msg-time">
-            {lastMessageInfo &&
-            lastMessageInfo.senderId === currentUserInfo.id ? (
+            {lastMessageInfo && lastMessageInfo.senderId === userInfo.id ? (
               <small>You: </small>
             ) : (
               <small
                 className={
-                  lastMessageInfo?.senderId !== currentUserInfo.id &&
+                  lastMessageInfo?.senderId !== userInfo.id &&
                   lastMessageInfo?.status !== undefined &&
                   lastMessageInfo.status !== "seen"
                     ? "unseen_message "
@@ -52,7 +51,7 @@ const Friends = ({ friend, currentUserInfo, onlineFriends }) => {
             {lastMessageInfo && lastMessageInfo.message.text ? (
               <small
                 className={
-                  lastMessageInfo?.senderId !== currentUserInfo.id &&
+                  lastMessageInfo?.senderId !== userInfo.id &&
                   lastMessageInfo?.status !== undefined &&
                   lastMessageInfo.status !== "seen"
                     ? "unseen_message "
@@ -73,7 +72,7 @@ const Friends = ({ friend, currentUserInfo, onlineFriends }) => {
             </small>
           </div>
         </div>
-        {currentUserInfo.id === lastMessageInfo?.senderId ? (
+        {userInfo.id === lastMessageInfo?.senderId ? (
           <div className="seen-unseen-icon">
             {lastMessageInfo.status === "seen" ? (
               <img src={`./images/${friendInfo.image}`} alt="" />

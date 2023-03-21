@@ -2,11 +2,9 @@ import * as actions from "../actionTypes/authType";
 import deCodeToken from "jwt-decode";
 
 const authState = {
-  loading: true,
   authenticate: false,
+  userInfo: "",
   error: "",
-  successMessage: "",
-  currentUserInfo: "",
 };
 
 const tokenDecode = (token) => {
@@ -22,9 +20,8 @@ const getToken = localStorage.getItem("authToken");
 if (getToken) {
   const getInfo = tokenDecode(getToken);
   if (getInfo) {
-    authState.currentUserInfo = getInfo;
+    authState.userInfo = getInfo;
     authState.authenticate = true;
-    authState.loading = false;
   }
 }
 
@@ -38,26 +35,15 @@ export const authReducer = (state = authState, action) => {
         ...state,
         error: payload.error,
         authenticate: false,
-        currentUserInfo: "",
-        loading: true,
+        userInfo: "",
       };
     case actions.REGISTER_SUCCESS:
     case actions.LOGIN_SUCCESS:
       return {
         ...state,
-        successMessage: payload.successMessage,
         authenticate: true,
         error: "",
-        currentUserInfo: tokenDecode(payload.token),
-        loading: false,
-      };
-
-    case actions.LOGOUT_SUCCESS:
-      return {
-        ...state,
-        successMessage: payload.successMessage,
-        authenticate: false,
-        currentUserInfo: "",
+        userInfo: tokenDecode(payload.token),
       };
 
     case actions.ERROR_CLEAR:
@@ -65,10 +51,12 @@ export const authReducer = (state = authState, action) => {
         ...state,
         error: "",
       };
-    case actions.SUCCESS_MESSAGE_CLEAR:
+
+    case actions.LOGOUT_SUCCESS:
       return {
         ...state,
-        successMessage: "",
+        authenticate: false,
+        userInfo: "",
       };
 
     default:

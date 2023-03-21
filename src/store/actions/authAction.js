@@ -25,7 +25,6 @@ const userRegister = (data) => {
       dispatch({
         type: REGISTER_SUCCESS,
         payload: {
-          successMessage: response.data.successMessage,
           token: response.data.token,
         },
       });
@@ -53,7 +52,6 @@ const userLogin = (data) => async (dispatch) => {
     dispatch({
       type: LOGIN_SUCCESS,
       payload: {
-        successMessage: response.data.successMessage,
         token: response.data.token,
       },
     });
@@ -73,9 +71,6 @@ const userLogout = () => async (dispatch) => {
     if (response.data.successMessage) {
       localStorage.removeItem("authToken");
       dispatch({
-        payload: {
-          successMessage: response.data.successMessage,
-        },
         type: LOGOUT_SUCCESS,
       });
     }

@@ -13,7 +13,6 @@ function App() {
         <Routes>
           <Route path="/galactchat/login" element={<Login />} />
           <Route path="/galactchat/register" element={<Register />} />
-
           <Route
             path="/"
             element={
