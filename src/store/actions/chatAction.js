@@ -32,7 +32,6 @@ export const messageSend = (data) => async (dispatch) => {
 export const messageGet = (id) => async (dispatch) => {
   try {
     const response = await axios.get(`/api/chat/get-message/${id}`);
-
     dispatch({
       type: MESSAGE_GET_SUCCESS,
       payload: { messages: response.data.messages },
@@ -59,7 +58,6 @@ export const sendImageMessage = (data) => async (dispatch) => {
 export const seenMessage = (message) => async (dispatch) => {
   try {
     const response = await axios.post("/api/chat/seen-message", message);
-    console.log(response.data);
   } catch (error) {
     console.log(error.response.message);
   }

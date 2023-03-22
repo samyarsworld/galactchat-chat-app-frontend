@@ -1,11 +1,12 @@
-.message-show {
+.message-box {
   height: 100%;
   padding: 10px;
   overflow-y: auto;
   &::-webkit-scrollbar {
     overflow: hidden;
   }
-  .friend_connect {
+
+  .friend-connect {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -21,13 +22,22 @@
       margin-top: 10px;
     }
   }
-  .my-message {
+
+  .user-message {
     float: right;
-    .my-text {
+    // border: 1px solid red;
+
+    .user-text {
       display: flex;
       align-items: flex-end;
       justify-content: flex-end;
+      // border: 1px solid black;
       width: 370px;
+
+      // @media screen and (max-width: 2000px) {
+      //   width: 1000px;
+      // }
+
       flex-direction: column;
       img.img,
       span {
@@ -37,8 +47,8 @@
         margin: 3px 0px 0px 0px;
         color: var(--text-color);
       }
-      .my {
-        background-color: var(--my-message-bg);
+      .user {
+        background-color: var(--user-message-bg);
         color: var(--text-white);
       }
       .message-text {
@@ -88,14 +98,13 @@
     }
   }
 }
-.image-message-time,
 .image-message {
   display: flex;
   img {
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    overflow: hidden;
+    // overflow: hidden;
     margin-right: 10px;
   }
   .message-text {

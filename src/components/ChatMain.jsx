@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import ReactDOM from "react-dom";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import { io } from "socket.io-client";
@@ -7,8 +8,16 @@ import useSound from "use-sound";
 import notificationSound from "../audio/notification.mp3";
 import sendingSound from "../audio/sending.mp3";
 
-import { FaEllipsisH, FaEdit, FaSistrix, FaSignOutAlt } from "react-icons/fa";
-import Friends from "./Friends";
+import Sidebar from "./Sidebar";
+
+import { FaSistrix } from "react-icons/fa";
+import {
+  BiAlignLeft,
+  BiAlignRight,
+  BiArrowFromLeft,
+  BiArrowFromRight,
+} from "react-icons/bi";
+import Friend from "./Friend";
 import ChatArea from "./ChatArea";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -91,7 +100,7 @@ const ChatMain = () => {
   // Get all online friends through socket
   useEffect(() => {
     socket.current.on("getOnlineUsers", (users) => {
-      const filteredUsers = users.filter((user) => user.userId !== userInfo.id);
+      const filteredUsers = users.filter((user) => user.id !== userInfo.id);
       setOnlineFriends(filteredUsers);
     });
   }, []);
@@ -171,13 +180,14 @@ const ChatMain = () => {
     socket.current.emit("typingMessage", {
       senderId: userInfo.id,
       receiverId: currentFriend._id,
-      message: e.target.value,
+      message: true,
     });
   };
 
   // Send message
   const sendMessage = (e) => {
     e.preventDefault();
+
     sendSound();
     if (newMessage) {
       const data = {
@@ -190,7 +200,7 @@ const ChatMain = () => {
       socket.current.emit("typingMessage", {
         senderId: userInfo.id,
         receiverId: currentFriend._id,
-        message: "",
+        message: false,
       });
 
       // Send new message through the backend
@@ -299,6 +309,50 @@ const ChatMain = () => {
     socket.current.emit("logout");
   };
 
+  // const toggleLeftSide = () => {
+  //   let sidebar = document.querySelector(".left-side");
+  //   let closeBtn = document.querySelector("#tog");
+  //   sidebar.classList.toggle("open");
+  //   if (sidebar.classList.contains("open")) {
+  //     closeBtn.classList.replace("bx-menu", "bx-menu-alt-right");
+  //   } else {
+  //     closeBtn.classList.replace("bx-menu-alt-right", "bx-menu");
+  //   }
+  // };
+
+  // Responsive toggler
+  const [toggleContainer, setToggleContainer] = useState(true);
+  const [win, setWin] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setWin(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const toggleLeft = {
+    width: win < 850 && toggleContainer && "100%",
+    borderRight: win < 850 && toggleContainer && "4px solid white",
+  };
+
+  const toggleRight = {
+    display: win < 850 && toggleContainer && "none",
+  };
+
+  const toggler = () => {
+    const sidebar = document.querySelector(".left-side");
+    const togBtn = document.querySelector("#tog");
+    if (toggleContainer) {
+      sidebar.classList.replace("open", "close");
+      ReactDOM.render(<BiArrowFromLeft size={30} />, togBtn);
+    } else {
+      sidebar.classList.replace("close", "open");
+      ReactDOM.render(<BiArrowFromRight size={30} />, togBtn);
+    }
+    setToggleContainer((prev) => !prev);
+  };
+  /////
+
   return (
     <div className="messenger">
       <Toaster
@@ -311,83 +365,81 @@ const ChatMain = () => {
         }}
       />
 
-      <div className="row">
-        <div className="col-3">
-          <div className="left-side">
-            <div className="top">
-              <div className="image-name">
-                <div className="image">
-                  <img src={`./images/${userInfo.image}`} alt="" />
-                </div>
-                <div className="name">
-                  <h3>{userInfo.username} </h3>
-                </div>
-              </div>
+      <div className="main">
+        <Sidebar logout={logout} />
 
-              <div className="icons">
-                <div onClick={() => setHide(!hide)} className="icon">
-                  <FaEllipsisH />
-                </div>
-                <div className="icon">
-                  <FaEdit />
-                </div>
-                <div className={hide ? "theme_logout" : "theme_logout show"}>
-                  <div onClick={logout} className="logout">
-                    <FaSignOutAlt style={{ marginRight: "4px" }} /> Logout
-                  </div>
-                </div>
+        <div className="left-side open" style={toggleLeft}>
+          <div className="top">
+            <div className="image-name">
+              <div className="image">
+                <img src={`./images/${userInfo.image}`} alt="" />
+              </div>
+              <div className="name">
+                <h3>{userInfo.username} </h3>
               </div>
             </div>
-
-            <div className="friend-search">
-              <div className="search">
-                <button>
-                  <FaSistrix />
-                </button>
-                <input
-                  type="text"
-                  onChange={search}
-                  placeholder="Search"
-                  className="form-control"
-                />
+            {/* <div className="icons">
+              <div className="icon" onClick={toggleLeftSide}>
+                <i className="bx bx-menu" id="tog"></i>
               </div>
-            </div>
+            </div> */}
+          </div>
 
-            <div className="friends">
-              {friends && friends.length > 0
-                ? friends.map((friend) => (
-                    <div
-                      className={
-                        currentFriend._id === friend.friendInfo._id
-                          ? "hover-friend active"
-                          : "hover-friend"
-                      }
-                      key={friend.friendInfo._id}
-                      onClick={() => setCurrentFriend(friend.friendInfo)}
-                    >
-                      <Friends
-                        friend={friend}
-                        userInfo={userInfo}
-                        onlineFriends={onlineFriends}
-                      />
-                    </div>
-                  ))
-                : "No Friend"}
+          <div className="friend-search">
+            <div className="search">
+              <button>
+                <FaSistrix />
+              </button>
+              <input
+                type="text"
+                onChange={search}
+                placeholder="Search"
+                className="form-control"
+              />
             </div>
           </div>
+
+          <div className="friends">
+            {friends && friends.length > 0
+              ? friends.map((friend) => (
+                  <div
+                    className={
+                      currentFriend._id === friend.friendInfo._id
+                        ? "hover-friend active"
+                        : "hover-friend"
+                    }
+                    key={friend.friendInfo._id}
+                    onClick={() => setCurrentFriend(friend.friendInfo)}
+                  >
+                    <Friend
+                      friend={friend}
+                      userInfo={userInfo}
+                      onlineFriends={onlineFriends}
+                    />
+                  </div>
+                ))
+              : "No Friend"}
+          </div>
+
+          <div className="toggler2" onClick={toggler} id="tog">
+            <BiArrowFromRight size={30} />
+          </div>
         </div>
-        <ChatArea
-          currentFriend={currentFriend}
-          newMessage={newMessage}
-          newMessageHandler={newMessageHandler}
-          sendMessage={sendMessage}
-          messages={messages}
-          scrollRef={scrollRef}
-          sendEmoji={sendEmoji}
-          sendImage={sendImage}
-          onlineFriends={onlineFriends}
-          typingMessage={typingMessage}
-        />
+
+        <div className="right-side" style={toggleRight}>
+          <ChatArea
+            currentFriend={currentFriend}
+            newMessage={newMessage}
+            newMessageHandler={newMessageHandler}
+            sendMessage={sendMessage}
+            messages={messages}
+            scrollRef={scrollRef}
+            sendEmoji={sendEmoji}
+            sendImage={sendImage}
+            onlineFriends={onlineFriends}
+            typingMessage={typingMessage}
+          />
+        </div>
       </div>
     </div>
   );

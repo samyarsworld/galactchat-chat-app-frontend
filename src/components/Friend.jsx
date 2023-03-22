@@ -2,7 +2,7 @@ import React from "react";
 import moment from "moment";
 import { FaRegCheckCircle } from "react-icons/fa";
 
-const Friends = ({ friend, userInfo, onlineFriends }) => {
+const Friend = ({ friend, userInfo, onlineFriends }) => {
   const { friendInfo, lastMessageInfo } = friend;
   return (
     <div className="friend">
@@ -11,7 +11,9 @@ const Friends = ({ friend, userInfo, onlineFriends }) => {
           <img src={`./images/${friendInfo.image}`} alt="" />
           {onlineFriends &&
           onlineFriends.length > 0 &&
-          onlineFriends.some((friend) => friend.userId === friendInfo._id) ? (
+          onlineFriends.some(
+            (onlineFriend) => onlineFriend.id === friendInfo._id
+          ) ? (
             <div className="active_icon"></div>
           ) : (
             ""
@@ -99,4 +101,4 @@ const Friends = ({ friend, userInfo, onlineFriends }) => {
   );
 };
 
-export default Friends;
+export default Friend;

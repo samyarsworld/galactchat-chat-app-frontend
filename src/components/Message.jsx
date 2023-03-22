@@ -2,19 +2,20 @@ import React from "react";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import { FaRegCheckCircle } from "react-icons/fa";
+import { IoCheckmarkSharp, IoCheckmarkDoneSharp } from "react-icons/io5";
 
 const Message = ({ messages, currentFriend, scrollRef, typingMessage }) => {
   const { userInfo } = useSelector((state) => state.auth);
 
   return (
     <>
-      <div className="message-show">
+      <div className="message-box">
         {messages && messages.length > 0 ? (
           messages.map((message, index) =>
             message.senderId === userInfo.id ? (
-              <div className="my-message" ref={scrollRef} key={message._id}>
+              <div className="user-message" ref={scrollRef} key={message._id}>
                 <div className="image-message">
-                  <div className="my-text">
+                  <div className="user-text">
                     <p className="message-text">
                       {message.message.text === "" ? (
                         <img
@@ -35,11 +36,11 @@ const Message = ({ messages, currentFriend, scrollRef, typingMessage }) => {
                         />
                       ) : message.status === "delivered" ? (
                         <span>
-                          <FaRegCheckCircle />
+                          <IoCheckmarkDoneSharp />
                         </span>
                       ) : (
                         <span>
-                          <FaRegCheckCircle />
+                          <IoCheckmarkSharp />
                         </span>
                       )
                     ) : (
@@ -53,7 +54,7 @@ const Message = ({ messages, currentFriend, scrollRef, typingMessage }) => {
               </div>
             ) : (
               <div className="fd-message" ref={scrollRef} key={message._id}>
-                <div className="image-message-time">
+                <div className="image-message">
                   <img src={`./images/${currentFriend.image}`} alt="..." />
                   <div className="message-time">
                     <div className="fd-text">
@@ -77,7 +78,7 @@ const Message = ({ messages, currentFriend, scrollRef, typingMessage }) => {
             )
           )
         ) : (
-          <div className="friend_connect">
+          <div className="friend-connect">
             <img src={`./images/${currentFriend.image}`} alt="" />
             <h3>{currentFriend.username} Connect You </h3>
             <span>

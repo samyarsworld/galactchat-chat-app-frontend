@@ -7,8 +7,9 @@
   &::-webkit-scrollbar {
     display: none;
   }
+
   small {
-    color: grey;
+    color: rgb(222, 202, 177);
   }
   .hover-friend.active {
     background-color: var(--active-color);
@@ -16,7 +17,7 @@
   .hover-friend {
     cursor: pointer;
     &:hover {
-      background-color: #017aff;
+      background-color: var(--friend-bg-hover-color);
     }
     .friend {
       display: flex;
@@ -59,7 +60,8 @@
           }
           h4 {
             color: var(--text-color);
-            font-weight: 300;
+            font-weight: 500;
+            font-size: 17px;
           }
           .msg-time {
             span.unseen_message {

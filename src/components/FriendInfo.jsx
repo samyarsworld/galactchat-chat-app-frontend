@@ -12,7 +12,7 @@ const FriendInfo = ({ currentFriend, onlineFriends, messages }) => {
         <div className="active-user">
           {onlineFriends &&
           onlineFriends.length > 0 &&
-          onlineFriends.some((user) => user.userId === currentFriend._id) ? (
+          onlineFriends.some((user) => user.id === currentFriend._id) ? (
             <div className="active-icon">Active</div>
           ) : (
             ""
@@ -26,19 +26,22 @@ const FriendInfo = ({ currentFriend, onlineFriends, messages }) => {
 
       <div className="others">
         <div className="custom-chat">
-          <h3>customize Chat </h3>
-          <FaEdit />
+          <h3>
+            Customize <FaEdit />
+          </h3>
         </div>
 
         <div className="privacy">
-          <h3>Privacy and Support </h3>
-          <FaCaretSquareDown />
+          <h3>
+            Privacy and Support <FaCaretSquareDown />
+          </h3>
         </div>
 
         <div className="media">
-          <h3>Shared Media </h3>
           <label htmlFor="gallery">
-            <FaSistrix />
+            <h3>
+              Shared Media <FaSistrix />
+            </h3>
           </label>
         </div>
       </div>
