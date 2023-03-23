@@ -1,7 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import moment from "moment";
-import { FaRegCheckCircle } from "react-icons/fa";
 import { IoCheckmarkSharp, IoCheckmarkDoneSharp } from "react-icons/io5";
 
 const Message = ({ messages, currentFriend, scrollRef, typingMessage }) => {
@@ -14,7 +13,7 @@ const Message = ({ messages, currentFriend, scrollRef, typingMessage }) => {
           messages.map((message, index) =>
             message.senderId === userInfo.id ? (
               <div className="user-message" ref={scrollRef} key={message._id}>
-                <div className="image-message">
+                <div className="image-message ">
                   <div className="user-text">
                     <p className="message-text">
                       {message.message.text === "" ? (
@@ -54,7 +53,7 @@ const Message = ({ messages, currentFriend, scrollRef, typingMessage }) => {
               </div>
             ) : (
               <div className="fd-message" ref={scrollRef} key={message._id}>
-                <div className="image-message">
+                <div className="image-message m-fd">
                   <img src={`./images/${currentFriend.image}`} alt="..." />
                   <div className="message-time">
                     <div className="fd-text">
@@ -80,7 +79,7 @@ const Message = ({ messages, currentFriend, scrollRef, typingMessage }) => {
         ) : (
           <div className="friend-connect">
             <img src={`./images/${currentFriend.image}`} alt="" />
-            <h3>{currentFriend.username} Connect You </h3>
+            <h3>{currentFriend.username} connected you </h3>
             <span>
               {moment(currentFriend.createdAt).startOf("mini").fromNow()}
             </span>
@@ -90,17 +89,9 @@ const Message = ({ messages, currentFriend, scrollRef, typingMessage }) => {
       {typingMessage &&
       typingMessage.message &&
       typingMessage.senderId === currentFriend._id ? (
-        <div className="typing-message">
-          <div className="fd-message">
-            <div className="image-message-time">
-              <img src={`./images/${currentFriend.image}`} alt="" />
-              <div className="message-time">
-                <div className="fd-text">
-                  <p className="time">Typing... </p>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div className="type">
+          <img src={`./images/${currentFriend.image}`} alt="" />
+          <p className="type-theme">Typing... </p>
         </div>
       ) : (
         ""

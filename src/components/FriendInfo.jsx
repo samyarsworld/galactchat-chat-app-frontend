@@ -1,10 +1,11 @@
-import React from "react";
-import { FaCaretSquareDown, FaEdit, FaSistrix } from "react-icons/fa";
+import React, { useState } from "react";
+import { FaCaretSquareDown } from "react-icons/fa";
 
 const FriendInfo = ({ currentFriend, onlineFriends, messages }) => {
+  const [media, setMedia] = useState(false);
+
   return (
     <div className="friend-info">
-      <input type="checkbox" id="gallery" />
       <div className="image-name">
         <div className="image">
           <img src={`./images/${currentFriend.image}`} alt="" />
@@ -25,37 +26,27 @@ const FriendInfo = ({ currentFriend, onlineFriends, messages }) => {
       </div>
 
       <div className="others">
-        <div className="custom-chat">
-          <h3>
-            Customize <FaEdit />
-          </h3>
-        </div>
-
-        <div className="privacy">
-          <h3>
-            Privacy and Support <FaCaretSquareDown />
-          </h3>
-        </div>
-
-        <div className="media">
-          <label htmlFor="gallery">
-            <h3>
-              Shared Media <FaSistrix />
-            </h3>
-          </label>
+        <div className="media" onClick={() => setMedia((prev) => !prev)}>
+          <h3>Shared Media</h3>
+          <FaCaretSquareDown />
         </div>
       </div>
 
-      <div className="gallery">
-        {messages && messages.length > 0
-          ? messages.map(
-              (message, index) =>
-                message.message.image && (
-                  <img key={index} src={`./images/${message.message.image}`} />
-                )
-            )
-          : ""}
-      </div>
+      {media && (
+        <div className="gallery">
+          {messages && messages.length > 0
+            ? messages.map(
+                (message, index) =>
+                  message.message.image && (
+                    <img
+                      key={index}
+                      src={`./images/${message.message.image}`}
+                    />
+                  )
+              )
+            : ""}
+        </div>
+      )}
     </div>
   );
 };

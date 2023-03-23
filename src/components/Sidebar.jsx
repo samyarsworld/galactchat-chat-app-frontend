@@ -1,12 +1,13 @@
 import React from "react";
 import { FaSignOutAlt } from "react-icons/fa";
+import { GiMaterialsScience } from "react-icons/gi";
 
 const Sidebar = ({ logout }) => {
   return (
     <div className="sidebar">
       <div className="sidebar-icon">
         <div className="icon-inner">
-          <img src="/images/7377W2.png" alt="H" width="30" />
+          <GiMaterialsScience size={40} />
         </div>
       </div>
       <div className="sidebar-icon">

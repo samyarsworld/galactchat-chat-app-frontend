@@ -23,6 +23,13 @@ const MessageArea = ({
           <div className="image-name">
             <div className="image">
               <img src={`./images/${currentFriend.image}`} alt="" />
+              {onlineFriends &&
+              onlineFriends.length > 0 &&
+              onlineFriends.some((user) => user.id === currentFriend._id) ? (
+                <div className="active-icon"></div>
+              ) : (
+                ""
+              )}
             </div>
             <div className="name">
               <h3>{currentFriend.username} </h3>

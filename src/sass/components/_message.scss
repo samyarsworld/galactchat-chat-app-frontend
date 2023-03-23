@@ -25,19 +25,11 @@
 
   .user-message {
     float: right;
-    // border: 1px solid red;
 
     .user-text {
       display: flex;
       align-items: flex-end;
       justify-content: flex-end;
-      // border: 1px solid black;
-      width: 370px;
-
-      // @media screen and (max-width: 2000px) {
-      //   width: 1000px;
-      // }
-
       flex-direction: column;
       img.img,
       span {
@@ -47,11 +39,11 @@
         margin: 3px 0px 0px 0px;
         color: var(--text-color);
       }
-      .user {
-        background-color: var(--user-message-bg);
-        color: var(--text-white);
-      }
       .message-text {
+        word-wrap: break-word;
+        max-width: 340px;
+        background-color: var(--user-message-bg-color);
+        color: var(--user-message-color);
         text-align: end;
         padding: 10px;
         border-radius: 10px;
@@ -78,12 +70,11 @@
       display: flex;
       align-items: flex-end;
       justify-content: flex-start;
-      width: 370px;
-      .fd {
-        background-color: var(--fd-message-bg);
-        color: var(--text-color);
-      }
       .message-text {
+        word-wrap: break-word;
+        max-width: 340px;
+        background-color: var(--fd-message-bg-color);
+        color: var(--fd-message-color);
         text-align: start;
         border-radius: 10px;
         img {
@@ -99,18 +90,14 @@
   }
 }
 .image-message {
-  display: flex;
   img {
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    // overflow: hidden;
     margin-right: 10px;
   }
   .message-text {
     padding: 8px;
-    color: #fff;
-    background-color: #017aff;
     font-size: 14px;
     font-weight: 400;
   }
@@ -122,4 +109,42 @@
 }
 .typing-message {
   padding: 0px 10px;
+}
+
+.type {
+  display: flex;
+  img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+
+  .type-theme {
+    padding: 8px 0px;
+    color: #727272d9;
+    font-size: 14px;
+  }
+}
+
+.user-message,
+.fd-message {
+  width: 51%;
+}
+
+.user-message {
+  display: flex;
+  flex-direction: column;
+  float: right;
+  width: 100%;
+}
+
+.user-text {
+  float: right;
+  width: 320px;
+}
+
+.m-fd {
+  display: flex;
 }

@@ -1,20 +1,21 @@
 .row {
   display: flex;
-  // height: 100%;
+
   .chat {
     width: 80%;
     height: 100vh;
-    border-right: 1px solid var(--border-color);
+    border-right: 2px solid var(--message-info-border);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     .header {
+      background-color: var(--header-bg-color);
       display: flex;
       flex-direction: row;
       align-items: center;
       justify-content: space-between;
       padding: 12px 10px;
-      border-bottom: 1px solid var(--border-color);
+      border-bottom: 1px solid var(--message-info-border);
       .image-name {
         display: flex;
         .image {
@@ -27,15 +28,15 @@
             height: 40px;
             border-radius: 50%;
           }
-          // .active-icon {
-          //   position: absolute;
-          //   width: 10px;
-          //   height: 10px;
-          //   border-radius: 50%;
-          //   background-color: rgb(28, 212, 28);
-          //   right: 0px;
-          //   bottom: 0pc;
-          // }
+          .active-icon {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: rgb(28, 212, 28);
+            right: 0px;
+            bottom: 0pc;
+          }
         }
         .name {
           display: flex;
@@ -43,7 +44,7 @@
           align-items: center;
           h3 {
             padding-left: 10px;
-            color: var(--text-color);
+            color: var(--header-color);
           }
         }
       }
@@ -55,9 +56,10 @@
           border-radius: 50%;
           margin-left: 8px;
           border-radius: 24px;
-          color: var(--icon-color);
+          color: var(--header-color);
           cursor: pointer;
-          background-color: var(--icon-bg-color);
+          background-color: #212121;
+          border: 1px solid var(--header-color);
           display: flex;
           justify-content: center;
           align-items: center;
@@ -78,10 +80,10 @@
 
 @media only screen and (max-width: 850px) {
   .chat {
-    width: 80% !important;
+    width: 100% !important;
   }
+
   .info {
-    width: 20% !important;
-    overflow-x: hidden;
+    display: none;
   }
 }

@@ -9,16 +9,13 @@ import notificationSound from "../audio/notification.mp3";
 import sendingSound from "../audio/sending.mp3";
 
 import Sidebar from "./Sidebar";
-
-import { FaSistrix } from "react-icons/fa";
-import {
-  BiAlignLeft,
-  BiAlignRight,
-  BiArrowFromLeft,
-  BiArrowFromRight,
-} from "react-icons/bi";
+import FriendInfo from "./FriendInfo";
 import Friend from "./Friend";
 import ChatArea from "./ChatArea";
+
+import { FaSistrix } from "react-icons/fa";
+import { BiArrowFromLeft, BiArrowFromRight } from "react-icons/bi";
+
 import { useDispatch, useSelector } from "react-redux";
 import {
   getFriends,
@@ -36,7 +33,6 @@ const ChatMain = () => {
   const [onlineFriends, setOnlineFriends] = useState([]);
   const [socketMessage, setSocketMessage] = useState("");
   const [typingMessage, setTypingMessage] = useState("");
-  const [hide, setHide] = useState(true);
 
   const { friends, messages, messageSuccess, message_get_success } =
     useSelector((state) => state.chat);
@@ -180,7 +176,7 @@ const ChatMain = () => {
     socket.current.emit("typingMessage", {
       senderId: userInfo.id,
       receiverId: currentFriend._id,
-      message: true,
+      message: e.target.value,
     });
   };
 
@@ -200,7 +196,7 @@ const ChatMain = () => {
       socket.current.emit("typingMessage", {
         senderId: userInfo.id,
         receiverId: currentFriend._id,
-        message: false,
+        message: "",
       });
 
       // Send new message through the backend
@@ -309,17 +305,6 @@ const ChatMain = () => {
     socket.current.emit("logout");
   };
 
-  // const toggleLeftSide = () => {
-  //   let sidebar = document.querySelector(".left-side");
-  //   let closeBtn = document.querySelector("#tog");
-  //   sidebar.classList.toggle("open");
-  //   if (sidebar.classList.contains("open")) {
-  //     closeBtn.classList.replace("bx-menu", "bx-menu-alt-right");
-  //   } else {
-  //     closeBtn.classList.replace("bx-menu-alt-right", "bx-menu");
-  //   }
-  // };
-
   // Responsive toggler
   const [toggleContainer, setToggleContainer] = useState(true);
   const [win, setWin] = useState(window.innerWidth);
@@ -334,7 +319,6 @@ const ChatMain = () => {
     width: win < 850 && toggleContainer && "100%",
     borderRight: win < 850 && toggleContainer && "4px solid white",
   };
-
   const toggleRight = {
     display: win < 850 && toggleContainer && "none",
   };
@@ -367,60 +351,68 @@ const ChatMain = () => {
 
       <div className="main">
         <Sidebar logout={logout} />
-
         <div className="left-side open" style={toggleLeft}>
-          <div className="top">
-            <div className="image-name">
-              <div className="image">
-                <img src={`./images/${userInfo.image}`} alt="" />
+          <div className="left">
+            <div className="top">
+              <div className="image-name">
+                <div className="image">
+                  <img src={`./images/${userInfo.image}`} alt="" />
+                </div>
+                <div className="name">
+                  <h3>{userInfo.username} </h3>
+                </div>
               </div>
-              <div className="name">
-                <h3>{userInfo.username} </h3>
-              </div>
-            </div>
-            {/* <div className="icons">
+              {/* <div className="icons">
               <div className="icon" onClick={toggleLeftSide}>
                 <i className="bx bx-menu" id="tog"></i>
               </div>
             </div> */}
-          </div>
+            </div>
 
-          <div className="friend-search">
-            <div className="search">
-              <button>
-                <FaSistrix />
-              </button>
-              <input
-                type="text"
-                onChange={search}
-                placeholder="Search"
-                className="form-control"
-              />
+            <div className="friend-search">
+              <div className="search">
+                <button>
+                  <FaSistrix />
+                </button>
+                <input
+                  type="text"
+                  onChange={search}
+                  placeholder="Search"
+                  className="form-control"
+                />
+              </div>
+            </div>
+
+            <div className="friends">
+              {friends && friends.length > 0
+                ? friends.map((friend) => (
+                    <div
+                      className={
+                        currentFriend._id === friend.friendInfo._id
+                          ? "hover-friend active"
+                          : "hover-friend"
+                      }
+                      key={friend.friendInfo._id}
+                      onClick={() => setCurrentFriend(friend.friendInfo)}
+                    >
+                      <Friend
+                        friend={friend}
+                        userInfo={userInfo}
+                        onlineFriends={onlineFriends}
+                      />
+                    </div>
+                  ))
+                : "No Friend"}
             </div>
           </div>
 
-          <div className="friends">
-            {friends && friends.length > 0
-              ? friends.map((friend) => (
-                  <div
-                    className={
-                      currentFriend._id === friend.friendInfo._id
-                        ? "hover-friend active"
-                        : "hover-friend"
-                    }
-                    key={friend.friendInfo._id}
-                    onClick={() => setCurrentFriend(friend.friendInfo)}
-                  >
-                    <Friend
-                      friend={friend}
-                      userInfo={userInfo}
-                      onlineFriends={onlineFriends}
-                    />
-                  </div>
-                ))
-              : "No Friend"}
+          <div className="right">
+            <FriendInfo
+              currentFriend={currentFriend}
+              onlineFriends={onlineFriends}
+              messages={messages}
+            />
           </div>
-
           <div className="toggler2" onClick={toggler} id="tog">
             <BiArrowFromRight size={30} />
           </div>

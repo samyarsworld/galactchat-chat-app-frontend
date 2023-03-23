@@ -14,7 +14,7 @@ const Friend = ({ friend, userInfo, onlineFriends }) => {
           onlineFriends.some(
             (onlineFriend) => onlineFriend.id === friendInfo._id
           ) ? (
-            <div className="active_icon"></div>
+            <div className="active-icon"></div>
           ) : (
             ""
           )}
@@ -67,35 +67,37 @@ const Friend = ({ friend, userInfo, onlineFriends }) => {
             ) : (
               <small>Connect You </small>
             )}
-            <small>
-              {lastMessageInfo
-                ? moment(lastMessageInfo.createdAt).startOf("mini").fromNow()
-                : moment(friendInfo.createdAt).startOf("mini").fromNow()}
-            </small>
           </div>
         </div>
-        {userInfo.id === lastMessageInfo?.senderId ? (
-          <div className="seen-unseen-icon">
-            {lastMessageInfo.status === "seen" ? (
-              <img src={`./images/${friendInfo.image}`} alt="" />
-            ) : lastMessageInfo.status === "delivered" ? (
-              <div className="delivered">
-                <FaRegCheckCircle />
-              </div>
-            ) : (
-              <div className="unseen"> </div>
-            )}
-          </div>
-        ) : (
-          <div className="seen-unseen-icon">
-            {lastMessageInfo?.status !== undefined &&
-            lastMessageInfo?.status !== "seen" ? (
-              <div className="seen-icon"> </div>
-            ) : (
-              ""
-            )}
-          </div>
-        )}
+        <div className="last-seen">
+          <small className="last-seen-text">
+            {lastMessageInfo
+              ? moment(lastMessageInfo.createdAt).startOf("mini").fromNow()
+              : moment(friendInfo.createdAt).startOf("mini").fromNow()}
+          </small>
+          {userInfo.id === lastMessageInfo?.senderId ? (
+            <div className="seen-unseen-icon">
+              {lastMessageInfo.status === "seen" ? (
+                <img src={`./images/${friendInfo.image}`} alt="" />
+              ) : lastMessageInfo.status === "delivered" ? (
+                <div className="delivered">
+                  <FaRegCheckCircle />
+                </div>
+              ) : (
+                <div className="unseen"> </div>
+              )}
+            </div>
+          ) : (
+            <div className="seen-unseen-icon">
+              {lastMessageInfo?.status !== undefined &&
+              lastMessageInfo?.status !== "seen" ? (
+                <div className="seen-icon"> </div>
+              ) : (
+                ""
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

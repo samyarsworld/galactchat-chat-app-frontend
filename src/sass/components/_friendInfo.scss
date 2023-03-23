@@ -1,4 +1,6 @@
 .friend-info {
+  background-color: var(--friend-info-bg-color);
+  border-left: 2px solid var(--message-info-border);
   padding: 12px 15px;
   display: flex;
   justify-content: start;
@@ -21,8 +23,9 @@
       margin-bottom: 5px;
     }
     .active-user {
-      color: rgb(27, 238, 27);
+      color: var(--user-message-bg-color);
       margin-bottom: 3px;
+      font-weight: bold;
     }
     .name {
       h4 {
@@ -57,9 +60,8 @@
   .gallery {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-gap: 5px;
+    grid-gap: 2px;
     overflow-y: auto;
-    display: none;
     &::-webkit-scrollbar {
       display: none;
     }
@@ -67,11 +69,5 @@
       width: 100%;
       height: 100%;
     }
-  }
-  #gallery {
-    display: none;
-  }
-  #gallery:checked ~ .gallery {
-    display: grid;
   }
 }
