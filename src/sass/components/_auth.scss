@@ -1,11 +1,14 @@
 .register {
+  display: flex;
+  // flex-direction: column;
   width: 100%;
   height: 100vh;
-  background-color: rgb(204, 221, 221);
+  background-color: #acc6f3;
   display: flex;
   justify-content: center;
   align-items: center;
   .card {
+    background-color: #0345b7;
     border-radius: 5mm;
     .card-header {
       h3 {
@@ -53,7 +56,7 @@
               background-color: #0a0e1585;
               padding: 8px;
               margin-bottom: 0px;
-              width: 120px;
+              width: 110px;
               text-align: center;
               border-radius: 50px;
               margin-left: 10px;
@@ -63,5 +66,52 @@
         }
       }
     }
+  }
+}
+
+.generate {
+  background-color: #5c0965 !important;
+  width: 300px !important;
+  margin: 20px 0 20px 20px;
+}
+
+.generate-img {
+  margin-top: 10px;
+  margin-bottom: 5px;
+  width: 256px;
+  height: 256px;
+}
+
+.genInput:focus {
+  outline: none;
+  box-shadow: 0 0 10px #00ff00;
+}
+
+@media only screen and (max-width: 700px) {
+  .register {
+    flex-direction: column;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    height: 100%;
+  }
+  .login {
+    height: 100vh;
+  }
+}
+
+.loader {
+  margin-left: 100px;
+  margin-top: 80px;
+  width: 50px;
+  height: 50px;
+  margin-right: 2px;
+  color: #cccccc;
+  animation: spin 1s linear infinite;
+  fill: #6469ff;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
 }

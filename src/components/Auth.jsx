@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useAlert } from "react-alert";
-import {
-  ERROR_CLEAR,
-  SUCCESS_MESSAGE_CLEAR,
-} from "../store/actionTypes/authType";
+import { ERROR_CLEAR } from "../store/actionTypes/authType";
+
+import axios from "axios";
 
 import { userLogin, userRegister } from "../store/actions/authAction";
+import GenerateImage from "./GenerateImage";
 
 const Auth = ({ isRegister }) => {
   const navigate = useNavigate();
@@ -20,11 +20,12 @@ const Auth = ({ isRegister }) => {
     password: "",
     confirmPassword: "",
     image: "",
+    genImage: "",
   };
 
   const { authenticate, error, userInfo } = useSelector((state) => state.auth);
   const [userAuthState, setUserAuthState] = useState(initialState);
-  const [loadImage, setLoadImage] = useState("");
+  const [loadImage, setLoadImage] = useState("/images/7377W2.png");
 
   // Check if user is authenticated
   useEffect(() => {
@@ -48,6 +49,7 @@ const Auth = ({ isRegister }) => {
       setUserAuthState({
         ...userAuthState,
         [e.target.name]: e.target.files[0],
+        genImage: "",
       });
     }
     const reader = new FileReader();
@@ -60,29 +62,72 @@ const Auth = ({ isRegister }) => {
   // Submit the form for signIn/register
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(isRegister);
+
     if (!isRegister) {
       dispatch(userLogin(userAuthState));
     } else {
-      const { username, email, password, confirmPassword, image } =
+      const { username, email, password, confirmPassword, image, genImage } =
         userAuthState;
+
       const formData = new FormData();
       formData.append("username", username);
       formData.append("email", email);
       formData.append("password", password);
       formData.append("confirmPassword", confirmPassword);
       formData.append("image", image);
+      formData.append("genImage", genImage);
 
       dispatch(userRegister(formData));
     }
+  };
 
-    // if (authenticate) {
-    //   navigate("/");
-    // }
+  // Image generation with DALL-E OpenAI
+  const genRef = useRef(null);
+  const goToGenerate = () => {
+    genRef.current.focus();
+  };
+
+  const [genImagePrompt, setGenImagePrompt] = useState("");
+  const [imageUrl, setImageUrl] = useState("/images/7377W2.png");
+  const [genLoading, setGenLoading] = useState(false);
+
+  const getImageFromOpenAi = async () => {
+    if (genImagePrompt.length > 10) {
+      try {
+        setGenLoading(true);
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+
+        const data = { genImagePrompt: genImagePrompt };
+        const response = await axios.post("/api/chat/gen-image", data, config);
+
+        const genImageUrl = response.data.genImageUrl;
+        setImageUrl(genImageUrl);
+        setLoadImage(genImageUrl);
+        setUserAuthState({
+          ...userAuthState,
+          genImage: genImageUrl,
+        });
+      } catch (error) {
+        console.log(error.response.data.error.errorMessage);
+      } finally {
+        setGenLoading(false);
+      }
+    } else {
+      console.log("Please enter a prompt with more than 10 charcters.");
+    }
+  };
+
+  const generateImage = (e) => {
+    e.preventDefault();
+    getImageFromOpenAi();
   };
 
   return (
-    <div className="register">
+    <div className={isRegister ? "register" : "register login"}>
       <div className="card">
         <div className="card-header">
           <h3>{isRegister ? "Register" : "Login"}</h3>
@@ -99,7 +144,7 @@ const Auth = ({ isRegister }) => {
                   onChange={handleChange}
                   value={userAuthState.username}
                   name="username"
-                  placeholder="User Name"
+                  placeholder="Username"
                   id="username"
                 />
               </div>
@@ -159,6 +204,21 @@ const Auth = ({ isRegister }) => {
                       id="image"
                     />
                   </div>
+                  <div
+                    className="file"
+                    style={{ marginLeft: "6px", color: "white" }}
+                  >
+                    OR
+                  </div>
+                  <div className="file">
+                    <label htmlFor="gen-btn">Generate</label>
+                    <button
+                      type="button"
+                      className="form-control"
+                      id="gen-btn"
+                      onClick={goToGenerate}
+                    />
+                  </div>
                 </div>
               </div>
             )}
@@ -166,22 +226,36 @@ const Auth = ({ isRegister }) => {
             <div className="form-group">
               <input
                 type="submit"
-                value={isRegister ? "Regsiter" : "login"}
+                value={isRegister ? "Register" : "login"}
                 className="btn"
               />
             </div>
             <div className="form-group">
               <span>
                 {isRegister ? (
-                  <Link to="/galactchat/login"> Login to your account </Link>
+                  <Link to="/galactchat/login">
+                    <small>Already have an account? Login in here.</small>
+                  </Link>
                 ) : (
-                  <Link to="/galactchat/register">Don't have an account?</Link>
+                  <Link to="/galactchat/register">
+                    <small>Don't have an account? Register here!</small>
+                  </Link>
                 )}
               </span>
             </div>
           </form>
         </div>
       </div>
+      {isRegister && (
+        <GenerateImage
+          genImagePrompt={genImagePrompt}
+          setGenImagePrompt={setGenImagePrompt}
+          genRef={genRef}
+          imageUrl={imageUrl}
+          generateImage={generateImage}
+          genLoading={genLoading}
+        />
+      )}
     </div>
   );
 };

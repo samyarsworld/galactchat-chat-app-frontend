@@ -5,6 +5,7 @@ import {
   FaGift,
   FaPaperPlane,
 } from "react-icons/fa";
+import emojis from "./Emojis";
 
 const SendMessage = ({
   newMessage,
@@ -13,28 +14,6 @@ const SendMessage = ({
   sendEmoji,
   sendImage,
 }) => {
-  const emojis = [
-    "😀",
-    "😄",
-    "😁",
-    "😆",
-    "😂",
-    "🤣",
-    "😊",
-    "🙂",
-    "🙃",
-    "😉",
-    "😍",
-    "😝",
-    "😜",
-    "🧐",
-    "🤓",
-    "😎",
-    "😕",
-    "🤑",
-    "🥴",
-    "😱",
-  ];
   function handleInputKeyPress(event) {
     if (event.key === "Enter") {
       sendMessage(event);
@@ -79,7 +58,7 @@ const SendMessage = ({
         />
 
         <div className="file hover-gift">
-          <label htmlFor="emoji">❤</label>
+          <label htmlFor="emoji">🥑</label>
         </div>
       </div>
 

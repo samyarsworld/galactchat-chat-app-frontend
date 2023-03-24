@@ -11,7 +11,7 @@ const userRegister = (data) => {
   return async (dispatch) => {
     const config = {
       headers: {
-        "Content-Type": "application/josn",
+        "Content-Type": "application/json",
       },
     };
     try {
