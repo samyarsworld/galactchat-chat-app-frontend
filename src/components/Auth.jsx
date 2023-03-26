@@ -5,6 +5,7 @@ import { useAlert } from "react-alert";
 import { ERROR_CLEAR } from "../store/actionTypes/authType";
 
 import axios from "axios";
+import { Image } from "cloudinary-react";
 
 import { userLogin, userRegister } from "../store/actions/authAction";
 import GenerateImage from "./GenerateImage";
@@ -19,13 +20,17 @@ const Auth = ({ isRegister }) => {
     email: "",
     password: "",
     confirmPassword: "",
-    image: "",
     genImage: "",
+    image: "",
   };
 
   const { authenticate, error, userInfo } = useSelector((state) => state.auth);
   const [userAuthState, setUserAuthState] = useState(initialState);
-  const [loadImage, setLoadImage] = useState("/images/7377W2.png");
+  const [userImage, setUserImage] = useState("");
+  const [genImagePrompt, setGenImagePrompt] = useState("");
+  const [genLoading, setGenLoading] = useState(false);
+  const [genImage, setGenImage] = useState("");
+  const [isGen, setIsGen] = useState("none");
 
   // Check if user is authenticated
   useEffect(() => {
@@ -48,25 +53,64 @@ const Auth = ({ isRegister }) => {
     if (e.target.files.length !== 0) {
       setUserAuthState({
         ...userAuthState,
-        [e.target.name]: e.target.files[0],
         genImage: "",
+        [e.target.name]: e.target.files[0],
       });
+      // setIsGen("no");
     }
     const reader = new FileReader();
     reader.onload = () => {
-      setLoadImage(reader.result);
+      setUserImage(reader.result);
     };
     reader.readAsDataURL(e.target.files[0]);
   };
 
+  // Image generation with DALL-E OpenAI
+  const genRef = useRef(null);
+  const goToGenerate = () => {
+    genRef.current.focus();
+  };
+
+  const getImageFromOpenAi = async (e) => {
+    e.preventDefault();
+    if (genImagePrompt.length > 10) {
+      try {
+        setGenLoading(true);
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+
+        const data = { genImagePrompt: genImagePrompt };
+        const response = await axios.post("/api/chat/gen-image", data, config);
+        const genImageUrl = response.data.genImageUrl;
+        setUserAuthState({
+          ...userAuthState,
+          genImage: genImageUrl,
+          image: "",
+        });
+        setGenImage(genImageUrl);
+        setUserImage(genImageUrl);
+        // setIsGen("yes");
+      } catch (error) {
+        console.log(error.response.data.error.errorMessage);
+      } finally {
+        setGenLoading(false);
+      }
+    } else {
+      console.log("Please enter a prompt with more than 10 characters.");
+    }
+  };
+
   // Submit the form for signIn/register
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!isRegister) {
       dispatch(userLogin(userAuthState));
     } else {
-      const { username, email, password, confirmPassword, image, genImage } =
+      const { username, email, password, confirmPassword, genImage, image } =
         userAuthState;
 
       const formData = new FormData();
@@ -81,63 +125,17 @@ const Auth = ({ isRegister }) => {
     }
   };
 
-  // Image generation with DALL-E OpenAI
-  const genRef = useRef(null);
-  const goToGenerate = () => {
-    genRef.current.focus();
-  };
-
-  const [genImagePrompt, setGenImagePrompt] = useState("");
-  const [imageUrl, setImageUrl] = useState("/images/7377W2.png");
-  const [genLoading, setGenLoading] = useState(false);
-
-  const getImageFromOpenAi = async () => {
-    if (genImagePrompt.length > 10) {
-      try {
-        setGenLoading(true);
-        const config = {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        };
-
-        const data = { genImagePrompt: genImagePrompt };
-        const response = await axios.post("/api/chat/gen-image", data, config);
-
-        const genImageUrl = response.data.genImageUrl;
-        setImageUrl(genImageUrl);
-        setLoadImage(genImageUrl);
-        setUserAuthState({
-          ...userAuthState,
-          genImage: genImageUrl,
-        });
-      } catch (error) {
-        console.log(error.response.data.error.errorMessage);
-      } finally {
-        setGenLoading(false);
-      }
-    } else {
-      console.log("Please enter a prompt with more than 10 charcters.");
-    }
-  };
-
-  const generateImage = (e) => {
-    e.preventDefault();
-    getImageFromOpenAi();
-  };
-
   return (
     <div className={isRegister ? "register" : "register login"}>
       <div className="card">
         <div className="card-header">
-          <h3>{isRegister ? "Register" : "Login"}</h3>
+          <h3>{isRegister ? "Create your account" : "Login"}</h3>
         </div>
 
         <div className="card-body">
           <form onSubmit={handleSubmit}>
             {isRegister && (
               <div className="form-group">
-                <label htmlFor="username">Username</label>
                 <input
                   type="text"
                   className="form-control"
@@ -151,7 +149,6 @@ const Auth = ({ isRegister }) => {
             )}
 
             <div className="form-group">
-              <label htmlFor="email">Email</label>
               <input
                 type="email"
                 className="form-control"
@@ -163,7 +160,6 @@ const Auth = ({ isRegister }) => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="password">Password</label>
               <input
                 type="password"
                 className="form-control"
@@ -176,14 +172,13 @@ const Auth = ({ isRegister }) => {
 
             {isRegister && (
               <div className="form-group">
-                <label htmlFor="confirmPassword">Confirm Password</label>
                 <input
                   type="password"
                   className="form-control"
                   onChange={handleChange}
                   value={userAuthState.confirmPassword}
                   name="confirmPassword"
-                  placeholder="Confirm Password"
+                  placeholder="Confirm"
                   id="confirmPassword"
                 />
               </div>
@@ -192,32 +187,29 @@ const Auth = ({ isRegister }) => {
               <div className="form-group">
                 <div className="file-image">
                   <div className="image">
-                    {loadImage ? <img src={loadImage} alt="avatar" /> : ""}
+                    {userImage ? <img src={userImage} alt="avatar" /> : ""}
                   </div>
-                  <div className="file">
-                    <label htmlFor="image">Select Image</label>
-                    <input
-                      type="file"
-                      className="form-control"
-                      onChange={handleFileChange}
-                      name="image"
-                      id="image"
-                    />
-                  </div>
-                  <div
-                    className="file"
-                    style={{ marginLeft: "6px", color: "white" }}
-                  >
-                    OR
-                  </div>
-                  <div className="file">
-                    <label htmlFor="gen-btn">Generate</label>
-                    <button
-                      type="button"
-                      className="form-control"
-                      id="gen-btn"
-                      onClick={goToGenerate}
-                    />
+                  <div className="select-image">
+                    <div className="file">
+                      <label htmlFor="image">Select Image</label>
+                      <input
+                        type="file"
+                        className="form-control"
+                        onChange={handleFileChange}
+                        name="image"
+                        id="image"
+                      />
+                    </div>
+                    <div className="or">OR</div>
+                    <div className="file">
+                      <label htmlFor="gen-btn">Generate</label>
+                      <button
+                        type="button"
+                        className="form-control"
+                        id="gen-btn"
+                        onClick={goToGenerate}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -251,8 +243,8 @@ const Auth = ({ isRegister }) => {
           genImagePrompt={genImagePrompt}
           setGenImagePrompt={setGenImagePrompt}
           genRef={genRef}
-          imageUrl={imageUrl}
-          generateImage={generateImage}
+          genImage={genImage}
+          getImageFromOpenAi={getImageFromOpenAi}
           genLoading={genLoading}
         />
       )}

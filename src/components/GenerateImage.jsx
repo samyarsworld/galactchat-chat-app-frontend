@@ -5,8 +5,8 @@ const GenerateImage = ({
   genRef,
   genImagePrompt,
   setGenImagePrompt,
-  imageUrl,
-  generateImage,
+  genImage,
+  getImageFromOpenAi,
   genLoading,
 }) => {
   return (
@@ -19,7 +19,6 @@ const GenerateImage = ({
           <div className="form-group ">
             <input
               ref={genRef}
-              defaultValue="A digital art of a purple dinosaur"
               type="text"
               className="form-control genInput"
               placeholder="Enter..."
@@ -40,16 +39,16 @@ const GenerateImage = ({
           ) : (
             <img
               className="generate-img"
-              src={imageUrl ? imageUrl : "/images/7377W2.png"}
+              src={genImage ? genImage : "/images/7377W2.png"}
             />
           )}
         </div>
-        <div className="form-group">
+        <div className="form-group" style={{ marginTop: "0" }}>
           <input
             type="submit"
             className="btn"
             value="CREATE"
-            onClick={generateImage}
+            onClick={getImageFromOpenAi}
           />
         </div>
       </div>
