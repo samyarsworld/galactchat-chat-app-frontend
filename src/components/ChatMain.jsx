@@ -49,7 +49,7 @@ const ChatMain = () => {
   // Socket setup
   useEffect(() => {
     // Define the socket inside our useRef mutable object and give the socket port
-    socket.current = io("ws://localhost:8000");
+    socket.current = io("ws://localhost:5000");
 
     // Adding current user to the online users
     socket.current.emit("addUser", userInfo.id, userInfo);
