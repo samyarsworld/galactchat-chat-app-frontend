@@ -262,31 +262,30 @@ const ChatMain = () => {
     if (e.target.files.length !== 0) {
       sendSound();
 
-      const imageName = e.target.files[0].name;
-      const newImageName = Date.now() + imageName;
+      const reader = new FileReader();
+      reader.readAsDataURL(e.target.files[0]);
+      reader.onload = () => {
+        const img = reader.result;
+        const formData = new FormData();
 
-      socket.current.emit("sendMessage", {
-        senderId: userInfo.id,
-        senderName: userInfo.username,
-        receiverId: currentFriend._id,
-        time: new Date(),
-        message: {
-          text: "",
-          image: newImageName,
-        },
-      });
-
-      const formData = new FormData();
-
-      formData.append("senderName", userInfo.username);
-      formData.append("imageName", newImageName);
-      formData.append("receiverId", currentFriend._id);
-      formData.append("image", e.target.files[0]);
-      dispatch(sendImageMessage(formData));
+        formData.append("senderName", userInfo.username);
+        formData.append("receiverId", currentFriend._id);
+        formData.append("image", img);
+        dispatch(sendImageMessage(formData));
+        // socket.current.emit("sendMessage", {
+        //   senderId: userInfo.id,
+        //   senderName: userInfo.username,
+        //   receiverId: currentFriend._id,
+        //   time: new Date(),
+        //   message: {
+        //     text: "",
+        //     image: messages[messages.length - 1],
+        //   },
+        // });
+      };
     }
   };
 
-  // Functions
   const search = (e) => {
     const getFriendClass = document.getElementsByClassName("hover-friend");
     const frienNameClass = document.getElementsByClassName("Fd_name");
@@ -356,7 +355,7 @@ const ChatMain = () => {
             <div className="top">
               <div className="image-name">
                 <div className="image">
-                  <img src={`./images/${userInfo.image}`} alt="" />
+                  <img src={userInfo.image} alt="" />
                 </div>
                 <div className="name">
                   <h3>{userInfo.username} </h3>

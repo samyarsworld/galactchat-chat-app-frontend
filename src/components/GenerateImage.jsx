@@ -9,6 +9,8 @@ const GenerateImage = ({
   getImageFromOpenAi,
   genLoading,
 }) => {
+  const initImg =
+    "http://res.cloudinary.com/dizjm7yrb/image/upload/v1679930612/profile_img/u2hphaff7nxk1uyf09us.png";
   return (
     <div className="card generate">
       <div className="card-header">
@@ -37,10 +39,7 @@ const GenerateImage = ({
               <GenLoader />
             </div>
           ) : (
-            <img
-              className="generate-img"
-              src={genImage ? genImage : "/images/7377W2.png"}
-            />
+            <img className="generate-img" src={genImage ? genImage : initImg} />
           )}
         </div>
         <div className="form-group" style={{ marginTop: "0" }}>

@@ -15,6 +15,8 @@ const userRegister = (data) => {
       },
     };
 
+    console.log(data);
+
     try {
       const response = await axios.post(
         "/api/chat/user-register",

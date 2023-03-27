@@ -8,7 +8,7 @@ const FriendInfo = ({ currentFriend, onlineFriends, messages }) => {
     <div className="friend-info">
       <div className="image-name">
         <div className="image">
-          <img src={`./images/${currentFriend.image}`} alt="" />
+          <img src={currentFriend.image} alt="" />
         </div>
         <div className="active-user">
           {onlineFriends &&
@@ -38,10 +38,7 @@ const FriendInfo = ({ currentFriend, onlineFriends, messages }) => {
             ? messages.map(
                 (message, index) =>
                   message.message.image && (
-                    <img
-                      key={index}
-                      src={`./images/${message.message.image}`}
-                    />
+                    <img key={index} src={message.message.image} />
                   )
               )
             : ""}

@@ -8,7 +8,7 @@ const Friend = ({ friend, userInfo, onlineFriends }) => {
     <div className="friend">
       <div className="friend-image">
         <div className="image">
-          <img src={`./images/${friendInfo.image}`} alt="" />
+          <img src={friendInfo.image} alt="" />
           {onlineFriends &&
           onlineFriends.length > 0 &&
           onlineFriends.some(
@@ -78,7 +78,7 @@ const Friend = ({ friend, userInfo, onlineFriends }) => {
           {userInfo.id === lastMessageInfo?.senderId ? (
             <div className="seen-unseen-icon">
               {lastMessageInfo.status === "seen" ? (
-                <img src={`./images/${friendInfo.image}`} alt="" />
+                <img src={friendInfo.image} alt="" />
               ) : lastMessageInfo.status === "delivered" ? (
                 <div className="delivered">
                   <FaRegCheckCircle />

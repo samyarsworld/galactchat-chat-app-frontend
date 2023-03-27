@@ -5,7 +5,7 @@ import { useAlert } from "react-alert";
 import { ERROR_CLEAR } from "../store/actionTypes/authType";
 
 import axios from "axios";
-import { Image } from "cloudinary-react";
+// import cloudinary from "cloudinary";
 
 import { userLogin, userRegister } from "../store/actions/authAction";
 import GenerateImage from "./GenerateImage";
@@ -15,22 +15,24 @@ const Auth = ({ isRegister }) => {
   const alert = useAlert();
   const dispatch = useDispatch();
 
+  const initImg =
+    "http://res.cloudinary.com/dizjm7yrb/image/upload/v1679930612/profile_img/u2hphaff7nxk1uyf09us.png";
+
   const initialState = {
     username: "",
     email: "",
     password: "",
     confirmPassword: "",
     genImage: "",
-    image: "",
+    image: initImg,
   };
 
   const { authenticate, error, userInfo } = useSelector((state) => state.auth);
   const [userAuthState, setUserAuthState] = useState(initialState);
-  const [userImage, setUserImage] = useState("");
+  const [userImage, setUserImage] = useState(initImg);
   const [genImagePrompt, setGenImagePrompt] = useState("");
   const [genLoading, setGenLoading] = useState(false);
   const [genImage, setGenImage] = useState("");
-  const [isGen, setIsGen] = useState("none");
 
   // Check if user is authenticated
   useEffect(() => {
@@ -51,18 +53,18 @@ const Auth = ({ isRegister }) => {
   // Input handle for file fileds
   const handleFileChange = (e) => {
     if (e.target.files.length !== 0) {
-      setUserAuthState({
-        ...userAuthState,
-        genImage: "",
-        [e.target.name]: e.target.files[0],
-      });
-      // setIsGen("no");
+      const reader = new FileReader();
+      reader.readAsDataURL(e.target.files[0]);
+
+      reader.onload = () => {
+        setUserImage(reader.result);
+        setUserAuthState({
+          ...userAuthState,
+          genImage: "",
+          [e.target.name]: reader.result,
+        });
+      };
     }
-    const reader = new FileReader();
-    reader.onload = () => {
-      setUserImage(reader.result);
-    };
-    reader.readAsDataURL(e.target.files[0]);
   };
 
   // Image generation with DALL-E OpenAI
@@ -84,15 +86,15 @@ const Auth = ({ isRegister }) => {
 
         const data = { genImagePrompt: genImagePrompt };
         const response = await axios.post("/api/chat/gen-image", data, config);
-        const genImageUrl = response.data.genImageUrl;
+        const genImg = response.data.genImg;
+
         setUserAuthState({
           ...userAuthState,
-          genImage: genImageUrl,
+          genImage: genImg,
           image: "",
         });
-        setGenImage(genImageUrl);
-        setUserImage(genImageUrl);
-        // setIsGen("yes");
+        setGenImage(genImg);
+        setUserImage(genImg);
       } catch (error) {
         console.log(error.response.data.error.errorMessage);
       } finally {
@@ -113,14 +115,14 @@ const Auth = ({ isRegister }) => {
       const { username, email, password, confirmPassword, genImage, image } =
         userAuthState;
 
+      const img = image || genImage;
+
       const formData = new FormData();
       formData.append("username", username);
       formData.append("email", email);
       formData.append("password", password);
       formData.append("confirmPassword", confirmPassword);
-      formData.append("image", image);
-      formData.append("genImage", genImage);
-
+      formData.append("image", img);
       dispatch(userRegister(formData));
     }
   };

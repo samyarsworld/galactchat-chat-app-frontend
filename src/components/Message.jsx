@@ -17,10 +17,7 @@ const Message = ({ messages, currentFriend, scrollRef, typingMessage }) => {
                   <div className="user-text">
                     <p className="message-text">
                       {message.message.text === "" ? (
-                        <img
-                          src={`./images/${message.message.image}`}
-                          alt="..."
-                        />
+                        <img src={message.message.image} alt="..." />
                       ) : (
                         message.message.text
                       )}
@@ -28,11 +25,7 @@ const Message = ({ messages, currentFriend, scrollRef, typingMessage }) => {
                     {index === messages.length - 1 &&
                     message.senderId === userInfo.id ? (
                       message.status === "seen" ? (
-                        <img
-                          className="img"
-                          src={`./images/${currentFriend.image}`}
-                          alt=""
-                        />
+                        <img className="img" src={currentFriend.image} alt="" />
                       ) : message.status === "delivered" ? (
                         <span>
                           <IoCheckmarkDoneSharp />
@@ -54,15 +47,12 @@ const Message = ({ messages, currentFriend, scrollRef, typingMessage }) => {
             ) : (
               <div className="fd-message" ref={scrollRef} key={message._id}>
                 <div className="image-message m-fd">
-                  <img src={`./images/${currentFriend.image}`} alt="..." />
+                  <img src={currentFriend.image} alt="..." />
                   <div className="message-time">
                     <div className="fd-text">
                       <p className="message-text">
                         {message.message.text === "" ? (
-                          <img
-                            src={`./images/${message.message.image}`}
-                            alt="..."
-                          />
+                          <img src={message.message.image} alt="..." />
                         ) : (
                           message.message.text
                         )}
@@ -78,7 +68,7 @@ const Message = ({ messages, currentFriend, scrollRef, typingMessage }) => {
           )
         ) : (
           <div className="friend-connect">
-            <img src={`./images/${currentFriend.image}`} alt="" />
+            <img src={currentFriend.image} alt="" />
             <h3>{currentFriend.username} connected you </h3>
             <span>
               {moment(currentFriend.createdAt).startOf("mini").fromNow()}
@@ -90,7 +80,7 @@ const Message = ({ messages, currentFriend, scrollRef, typingMessage }) => {
       typingMessage.message &&
       typingMessage.senderId === currentFriend._id ? (
         <div className="type">
-          <img src={`./images/${currentFriend.image}`} alt="" />
+          <img src={currentFriend.image} alt="" />
           <p className="type-theme">Typing... </p>
         </div>
       ) : (

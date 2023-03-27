@@ -43,7 +43,16 @@ export const messageGet = (id) => async (dispatch) => {
 
 export const sendImageMessage = (data) => async (dispatch) => {
   try {
-    const response = await axios.post("/api/chat/send-image-message", data);
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const response = await axios.post(
+      "/api/chat/send-image-message",
+      data,
+      config
+    );
     dispatch({
       type: MESSAGE_SEND_SUCCESS,
       payload: {
