@@ -6,7 +6,7 @@ import {
 } from "../actionTypes/chatType";
 
 const URL = "https://galactchat.onrender.com";
-// const URL = "http://localhost:3000";
+// const URL = "http://localhost:5000";
 
 export const getFriends = () => async (dispatch) => {
   try {
@@ -32,9 +32,15 @@ export const messageSend = (data) => async (dispatch) => {
   }
 };
 
-export const messageGet = (id) => async (dispatch) => {
+export const messageGet = (data) => async (dispatch) => {
+  const { senderId, userId } = data;
   try {
-    const response = await axios.get(`${URL}/api/chat/get-message/${id}`);
+    const response = await axios.get(`${URL}/api/chat/get-message`, {
+      params: {
+        userId: userId,
+        senderId: senderId,
+      },
+    });
     dispatch({
       type: MESSAGE_GET_SUCCESS,
       payload: { messages: response.data.messages },

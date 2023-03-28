@@ -8,7 +8,7 @@ import {
 } from "../actionTypes/authType";
 
 const URL = "https://galactchat.onrender.com";
-// const URL = "http://localhost:3000";
+// const URL = "http://localhost:5000";
 
 const userRegister = (data) => {
   return async (dispatch) => {

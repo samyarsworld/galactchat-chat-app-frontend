@@ -10,7 +10,7 @@ import { userLogin, userRegister } from "../store/actions/authAction";
 import GenerateImage from "./GenerateImage";
 
 const URL = "https://galactchat.onrender.com";
-// const URL = "http://localhost:3000";
+// const URL = "http://localhost:5000";
 
 const Auth = ({ isRegister }) => {
   const navigate = useNavigate();

@@ -47,7 +47,7 @@ const ChatMain = () => {
   const [sendSound] = useSound(sendingSound);
 
   const URL = "https://galactchat.onrender.com";
-  // const URL = "http://localhost:3000";
+  // const URL = "http://localhost:5000";
 
   // Socket setup
   useEffect(() => {
@@ -117,7 +117,7 @@ const ChatMain = () => {
 
   // Getting all the previous messages between the current friend and user through backend
   useEffect(() => {
-    dispatch(messageGet(currentFriend._id));
+    dispatch(messageGet({ senderId: currentFriend._id, userId: userInfo.id }));
   }, [currentFriend?._id]);
 
   // Adjusting the scroll to see new messages
@@ -191,6 +191,7 @@ const ChatMain = () => {
     if (newMessage) {
       const data = {
         senderName: userInfo.username,
+        senderId: userInfo.id,
         receiverId: currentFriend._id,
         message: newMessage,
       };
@@ -272,19 +273,10 @@ const ChatMain = () => {
         const formData = new FormData();
 
         formData.append("senderName", userInfo.username);
+        formData.append("senderId", userInfo.id);
         formData.append("receiverId", currentFriend._id);
         formData.append("image", img);
         dispatch(sendImageMessage(formData));
-        // socket.current.emit("sendMessage", {
-        //   senderId: userInfo.id,
-        //   senderName: userInfo.username,
-        //   receiverId: currentFriend._id,
-        //   time: new Date(),
-        //   message: {
-        //     text: "",
-        //     image: messages[messages.length - 1],
-        //   },
-        // });
       };
     }
   };
