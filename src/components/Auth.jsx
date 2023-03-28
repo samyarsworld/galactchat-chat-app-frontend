@@ -18,7 +18,7 @@ const Auth = ({ isRegister }) => {
   const dispatch = useDispatch();
 
   const initImg =
-    "http://res.cloudinary.com/dizjm7yrb/image/upload/v1679930612/profile_img/u2hphaff7nxk1uyf09us.png";
+    "https://res.cloudinary.com/dizjm7yrb/image/upload/v1679970425/profile_img/q54lfqacbozd9l2pykld.png";
 
   const initialState = {
     username: "",
