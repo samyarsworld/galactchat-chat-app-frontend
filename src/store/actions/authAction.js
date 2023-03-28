@@ -7,6 +7,9 @@ import {
   LOGOUT_SUCCESS,
 } from "../actionTypes/authType";
 
+const URL = "https://galactchat.onrender.com";
+// const URL = "http://localhost:3000";
+
 const userRegister = (data) => {
   return async (dispatch) => {
     const config = {
@@ -17,7 +20,7 @@ const userRegister = (data) => {
 
     try {
       const response = await axios.post(
-        "/api/chat/user-register",
+        `${URL}/api/chat/user-register`,
         data,
         config
       );
@@ -49,7 +52,11 @@ const userLogin = (data) => async (dispatch) => {
   };
 
   try {
-    const response = await axios.post("/api/chat/user-login", data, config);
+    const response = await axios.post(
+      `${URL}/api/chat/user-login`,
+      data,
+      config
+    );
     localStorage.setItem("authToken", response.data.token);
     dispatch({
       type: LOGIN_SUCCESS,
@@ -69,7 +76,7 @@ const userLogin = (data) => async (dispatch) => {
 
 const userLogout = () => async (dispatch) => {
   try {
-    const response = await axios.post("/api/chat/user-logout");
+    const response = await axios.post(`${URL}/api/chat/user-logout`);
     if (response.data.successMessage) {
       localStorage.removeItem("authToken");
       dispatch({

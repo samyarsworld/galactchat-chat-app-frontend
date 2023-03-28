@@ -5,9 +5,12 @@ import {
   MESSAGE_SEND_SUCCESS,
 } from "../actionTypes/chatType";
 
+const URL = "https://galactchat.onrender.com";
+// const URL = "http://localhost:3000";
+
 export const getFriends = () => async (dispatch) => {
   try {
-    const response = await axios.get("/api/chat/get-friends");
+    const response = await axios.get(`${URL}/api/chat/get-friends`);
     dispatch({
       type: FRIEND_GET_SUCCESS,
       payload: { friends: response.data.friends },
@@ -19,7 +22,7 @@ export const getFriends = () => async (dispatch) => {
 
 export const messageSend = (data) => async (dispatch) => {
   try {
-    const response = await axios.post("/api/chat/send-message", data);
+    const response = await axios.post(`${URL}/api/chat/send-message`, data);
     dispatch({
       type: MESSAGE_SEND_SUCCESS,
       payload: { message: response.data.message },
@@ -31,7 +34,7 @@ export const messageSend = (data) => async (dispatch) => {
 
 export const messageGet = (id) => async (dispatch) => {
   try {
-    const response = await axios.get(`/api/chat/get-message/${id}`);
+    const response = await axios.get(`${URL}/api/chat/get-message/${id}`);
     dispatch({
       type: MESSAGE_GET_SUCCESS,
       payload: { messages: response.data.messages },
@@ -49,7 +52,7 @@ export const sendImageMessage = (data) => async (dispatch) => {
       },
     };
     const response = await axios.post(
-      "/api/chat/send-image-message",
+      `${URL}/api/chat/send-image-message`,
       data,
       config
     );
@@ -66,7 +69,7 @@ export const sendImageMessage = (data) => async (dispatch) => {
 
 export const seenMessage = (message) => async (dispatch) => {
   try {
-    const response = await axios.post("/api/chat/seen-message", message);
+    const response = await axios.post(`${URL}/api/chat/seen-message`, message);
   } catch (error) {
     console.log(error.response.message);
   }
@@ -74,7 +77,10 @@ export const seenMessage = (message) => async (dispatch) => {
 
 export const updateMessage = (message) => async (dispatch) => {
   try {
-    const response = await axios.post("/api/chat/delivered-message", message);
+    const response = await axios.post(
+      `${URL}/api/chat/delivered-message`,
+      message
+    );
     console.log(response.data);
   } catch (error) {
     console.log(error.response.message);

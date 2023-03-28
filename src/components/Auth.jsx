@@ -5,10 +5,12 @@ import { useAlert } from "react-alert";
 import { ERROR_CLEAR } from "../store/actionTypes/authType";
 
 import axios from "axios";
-// import cloudinary from "cloudinary";
 
 import { userLogin, userRegister } from "../store/actions/authAction";
 import GenerateImage from "./GenerateImage";
+
+const URL = "https://galactchat.onrender.com";
+// const URL = "http://localhost:3000";
 
 const Auth = ({ isRegister }) => {
   const navigate = useNavigate();
@@ -85,7 +87,11 @@ const Auth = ({ isRegister }) => {
         };
 
         const data = { genImagePrompt: genImagePrompt };
-        const response = await axios.post("/api/chat/gen-image", data, config);
+        const response = await axios.post(
+          `${URL}/api/chat/gen-image`,
+          data,
+          config
+        );
         const genImg = response.data.genImg;
 
         setUserAuthState({
