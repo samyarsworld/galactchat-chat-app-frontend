@@ -27,7 +27,7 @@ const FriendInfo = ({ currentFriend, onlineFriends, messages }) => {
 
       <div className="others">
         <div className="media" onClick={() => setMedia((prev) => !prev)}>
-          <h3>Shared Media</h3>
+          Shared Media
           <FaCaretSquareDown />
         </div>
       </div>

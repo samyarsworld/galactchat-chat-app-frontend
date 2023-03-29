@@ -1,8 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
-// import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useAlert } from "react-alert";
-import { ERROR_CLEAR } from "../store/actionTypes/authType";
+import {
+  ERROR_CLEAR,
+  SUCCESS_MESSAGE_CLEAR,
+} from "../store/actionTypes/authType";
+import ClipLoader from "react-spinners/ClipLoader";
+import RingLoader from "react-spinners/RingLoader";
 
 import axios from "axios";
 
@@ -13,7 +17,6 @@ const URL = "https://galactchat.onrender.com";
 // const URL = "http://localhost:5000";
 
 const Auth = () => {
-  // const navigate = useNavigate();
   const alert = useAlert();
   const dispatch = useDispatch();
 
@@ -30,23 +33,27 @@ const Auth = () => {
   };
 
   const [isRegister, setIsRegister] = useState(true);
-  const { authenticate, error, userInfo } = useSelector((state) => state.auth);
+  const { authenticate, successMessage, error, userInfo } = useSelector(
+    (state) => state.auth
+  );
   const [userAuthState, setUserAuthState] = useState(initialState);
   const [userImage, setUserImage] = useState(initImg);
   const [genImagePrompt, setGenImagePrompt] = useState("");
-  const [genLoading, setGenLoading] = useState(false);
   const [genImage, setGenImage] = useState("");
+  const [genLoading, setGenLoading] = useState(false);
+  const [authLoading, setAuthLoading] = useState(false);
 
-  // Check if user is authenticated
-  // useEffect(() => {
-  //   if (authenticate) {
-  //     navigate("/");
-  //   }
-  //   if (error) {
-  //     error.map((err) => alert.error(err));
-  //     dispatch({ type: ERROR_CLEAR });
-  //   }
-  // }, [error, authenticate]);
+  useEffect(() => {
+    if (successMessage) {
+      setAuthLoading(false);
+      dispatch({ type: SUCCESS_MESSAGE_CLEAR });
+    }
+    if (error) {
+      setAuthLoading(false);
+      error.map((err) => alert.error(err));
+      dispatch({ type: ERROR_CLEAR });
+    }
+  }, [successMessage, error]);
 
   // Input handle for text fileds
   const handleChange = (e) => {
@@ -116,12 +123,13 @@ const Auth = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setAuthLoading(true);
+
     if (!isRegister) {
       dispatch(userLogin(userAuthState));
     } else {
       const { username, email, password, confirmPassword, genImage, image } =
         userAuthState;
-
       const img = image || genImage;
 
       const formData = new FormData();
@@ -137,6 +145,16 @@ const Auth = () => {
   return (
     <div className={isRegister ? "register" : "register login"}>
       <div className="card">
+        {isRegister ? (
+          <div className="loaderRegister">
+            <RingLoader color={"#36c3d6"} loading={authLoading} size={100} />
+          </div>
+        ) : (
+          <div className="loaderLogin">
+            <ClipLoader color={"#8836e5"} loading={authLoading} size={100} />
+          </div>
+        )}
+
         <div className="card-header">
           <h3>{isRegister ? "Create your account" : "Login"}</h3>
         </div>
@@ -226,6 +244,7 @@ const Auth = () => {
 
             <div className="form-group">
               <input
+                style={{ minHeight: "20px" }}
                 type="submit"
                 value={isRegister ? "Register" : "login"}
                 className="btn"

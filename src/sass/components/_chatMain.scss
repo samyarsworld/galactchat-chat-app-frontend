@@ -195,6 +195,7 @@
     }
     &.open {
       transition: all 1.5s ease;
+
       .right {
         display: flex;
       }
@@ -209,8 +210,23 @@
   }
 }
 
-// @media only screen and (max-width: 650px) {
-//   .main {
-//     padding-right: 90px;
-//   }
-// }
+@media only screen and (max-width: 450px) {
+  .friends {
+    max-width: 250px;
+  }
+  .main {
+    padding-right: 90px;
+  }
+}
+
+@media only screen and (max-width: 370px) {
+  .friends {
+    max-width: 225px;
+  }
+}
+
+.loaderFriends {
+  position: absolute;
+  top: 190px;
+  right: -40%;
+}

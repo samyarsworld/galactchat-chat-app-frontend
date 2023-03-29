@@ -4,6 +4,7 @@ import deCodeToken from "jwt-decode";
 const authState = {
   authenticate: false,
   userInfo: "",
+  successMessage: "",
   error: "",
 };
 
@@ -42,6 +43,7 @@ export const authReducer = (state = authState, action) => {
       return {
         ...state,
         authenticate: true,
+        successMessage: "Successful",
         error: "",
         userInfo: tokenDecode(payload.token),
       };
@@ -50,6 +52,12 @@ export const authReducer = (state = authState, action) => {
       return {
         ...state,
         error: "",
+      };
+
+    case actions.SUCCESS_MESSAGE_CLEAR:
+      return {
+        ...state,
+        successMessage: "",
       };
 
     case actions.LOGOUT_SUCCESS:
