@@ -1,35 +1,16 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import PrivateRoute from "./components/PrivateRoute";
-import axios from "axios";
 import Auth from "./components/Auth";
 import ChatMain from "./components/ChatMain";
+import { useSelector } from "react-redux";
 
 function App() {
-  return (
-    <div>
-      <BrowserRouter>
-        <Routes>
-          <Route
-            path="/galactchat/login"
-            element={<Auth isRegister={false} />}
-          />
-          <Route
-            path="/galactchat/register"
-            element={<Auth isRegister={true} />}
-          />
-          <Route
-            path="/"
-            element={
-              <PrivateRoute>
-                <ChatMain />
-              </PrivateRoute>
-            }
-          />
-        </Routes>
-      </BrowserRouter>
-    </div>
-  );
+  const { authenticate } = useSelector((state) => state.auth);
+  if (!authenticate) {
+    return <Auth />;
+  }
+  return <ChatMain />;
 }
 
 export default App;

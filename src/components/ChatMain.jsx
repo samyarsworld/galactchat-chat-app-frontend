@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import ReactDOM from "react-dom";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import { io } from "socket.io-client";
 
@@ -41,7 +41,7 @@ const ChatMain = () => {
   const dispatch = useDispatch();
   const scrollRef = useRef();
   const socket = useRef();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const [notifySound] = useSound(notificationSound);
   const [sendSound] = useSound(sendingSound);
@@ -106,7 +106,7 @@ const ChatMain = () => {
 
   // Get all friends through backend
   useEffect(() => {
-    dispatch(getFriends());
+    dispatch(getFriends({ userId: userInfo.id }));
   }, []);
 
   // Show "a" friend's chat if no friend is chosen through backend

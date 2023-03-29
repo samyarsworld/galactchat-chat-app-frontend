@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+// import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useAlert } from "react-alert";
 import { ERROR_CLEAR } from "../store/actionTypes/authType";
@@ -12,8 +12,8 @@ import GenerateImage from "./GenerateImage";
 const URL = "https://galactchat.onrender.com";
 // const URL = "http://localhost:5000";
 
-const Auth = ({ isRegister }) => {
-  const navigate = useNavigate();
+const Auth = () => {
+  // const navigate = useNavigate();
   const alert = useAlert();
   const dispatch = useDispatch();
 
@@ -29,6 +29,7 @@ const Auth = ({ isRegister }) => {
     image: initImg,
   };
 
+  const [isRegister, setIsRegister] = useState(true);
   const { authenticate, error, userInfo } = useSelector((state) => state.auth);
   const [userAuthState, setUserAuthState] = useState(initialState);
   const [userImage, setUserImage] = useState(initImg);
@@ -37,15 +38,15 @@ const Auth = ({ isRegister }) => {
   const [genImage, setGenImage] = useState("");
 
   // Check if user is authenticated
-  useEffect(() => {
-    if (authenticate) {
-      navigate("/");
-    }
-    if (error) {
-      error.map((err) => alert.error(err));
-      dispatch({ type: ERROR_CLEAR });
-    }
-  }, [error, authenticate]);
+  // useEffect(() => {
+  //   if (authenticate) {
+  //     navigate("/");
+  //   }
+  //   if (error) {
+  //     error.map((err) => alert.error(err));
+  //     dispatch({ type: ERROR_CLEAR });
+  //   }
+  // }, [error, authenticate]);
 
   // Input handle for text fileds
   const handleChange = (e) => {
@@ -231,15 +232,11 @@ const Auth = ({ isRegister }) => {
               />
             </div>
             <div className="form-group">
-              <span>
+              <span onClick={() => setIsRegister((prevState) => !prevState)}>
                 {isRegister ? (
-                  <Link to="/galactchat/login">
-                    <small>Already have an account? Login in here.</small>
-                  </Link>
+                  <small>Already have an account? Login in here.</small>
                 ) : (
-                  <Link to="/galactchat/register">
-                    <small>Don't have an account? Register here!</small>
-                  </Link>
+                  <small>Don't have an account? Register here!</small>
                 )}
               </span>
             </div>
