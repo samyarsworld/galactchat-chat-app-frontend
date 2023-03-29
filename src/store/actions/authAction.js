@@ -13,6 +13,7 @@ const URL = "https://galactchat.onrender.com";
 const userRegister = (data) => {
   return async (dispatch) => {
     const config = {
+      withCredentials: true,
       headers: {
         "Content-Type": "application/json",
       },
@@ -46,6 +47,7 @@ const userRegister = (data) => {
 
 const userLogin = (data) => async (dispatch) => {
   const config = {
+    withCredentials: true,
     headers: {
       "Content-Type": "application/json",
     },

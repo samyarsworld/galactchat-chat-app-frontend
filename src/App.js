@@ -5,8 +5,6 @@ import axios from "axios";
 import Auth from "./components/Auth";
 import ChatMain from "./components/ChatMain";
 
-axios.defaults.withCredentials = true;
-
 function App() {
   return (
     <div>
