@@ -6,17 +6,17 @@ This is a real-time chat application made using React and Redux as frontend, and
 
 <a name="demo"></a>
 ## Demo
-| Human vs Human  |
+| AUthentication Page  |
 |:----------------------|
 |<img src="https://drive.google.com/uc?export=view&id=1_9MeqzsRwzAMEfgVG6DYsn7ZKMYtwS0h" width="420" height="100%"/> |
 
-| Human vs Human  |
+| Main Chat Desktop View |
 |:----------------------|
 <img src="https://drive.google.com/uc?export=view&id=1-QtIt1Bsb4WhgOXa9ATvRelik_WMAO0d" width="420" height="100%"/> |
 
-| Human vs Human   | Human vs AI (AI is controlling black)  |
-|:----------------------|:------------------|
-|<img src="https://drive.google.com/uc?export=view&id=1-dIbadCR_qVwcq-nw0t0WhULuGN1t3a5" width="420" height="100%"/> | <img src="https://drive.google.com/uc?export=view&id=1uCXv37W7XtssM-y5RsmXpsv-VnbMzxmR" width="420" height="100%"/> |
+| Main Chat Mobile View Contacts   |  Main Chat Mobile View Chat  |
+|:----------------------  |:------------------|
+|<img src="https://drive.google.com/uc?export=view&id=1-dIbadCR_qVwcq-nw0t0WhULuGN1t3a5" width="420" height="100%"/>   | <img src="https://drive.google.com/uc?export=view&id=1uCXv37W7XtssM-y5RsmXpsv-VnbMzxmR" width="420" height="100%"/> |
 
 
 
