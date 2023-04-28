@@ -7,6 +7,10 @@ This is a real-time chat application made using React and Redux as frontend, and
 <a name="demo"></a>
 ## Demo
 
+GUI of the main part of the app:
+<p align="center"><img src="https://media.giphy.com/media/VFBvsWCLNNn7NVoPCK/giphy.gif" width="900"/>
+</p>
+
 | Authentication Page  |
 |:----------------------|
 |<img src="https://drive.google.com/uc?export=view&id=1_9MeqzsRwzAMEfgVG6DYsn7ZKMYtwS0h" width="700" height="100%"/> |
