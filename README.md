@@ -8,7 +8,7 @@ This is a real-time chat application made using React and Redux as frontend, and
 ## Demo
 | Human vs Human   | Human vs AI (AI is controlling black)  |
 |:----------------------|:------------------|
-|![image](https://drive.google.com/file/d/1_9MeqzsRwzAMEfgVG6DYsn7ZKMYtwS0h/view?usp=sharing) | <img src="https://drive.google.com/file/d/1uCXv37W7XtssM-y5RsmXpsv-VnbMzxmR/view?usp=sharing" width="420" frameBorder="0" allowFullScree/> |
+|![image](https://drive.google.com/uc?export=view&id=1_9MeqzsRwzAMEfgVG6DYsn7ZKMYtwS0h) | <img src="https://drive.google.com/file/d/1uCXv37W7XtssM-y5RsmXpsv-VnbMzxmR/view?usp=sharing" width="420" frameBorder="0" allowFullScree/> |
 
 | Human vs Human   | Human vs AI (AI is controlling black)  |
 |:----------------------|:------------------|
