@@ -13,7 +13,7 @@ This is a real-time chat application made using React and Redux as frontend, and
 
 | Main Chat Desktop View |
 |:----------------------|
-<img src="https://drive.google.com/uc?export=view&id=1-QtIt1Bsb4WhgOXa9ATvRelik_WMAO0d" width="800" height="100%"/> |
+<img src="https://drive.google.com/uc?export=view&id=1-QtIt1Bsb4WhgOXa9ATvRelik_WMAO0d" width="600" height="100%"/> |
 
 
 
