@@ -8,11 +8,11 @@ This is a real-time chat application made using React and Redux as frontend, and
 ## Demo
 | Human vs Human   | Human vs AI (AI is controlling black)  |
 |:----------------------|:------------------|
-|<img src="https://drive.google.com/file/d/1_9MeqzsRwzAMEfgVG6DYsn7ZKMYtwS0h/view?usp=share_link" width="420"  frameBorder="0" class="giphy-embed" allowFullScreen /> | <img src="https://drive.google.com/file/d/1-QtIt1Bsb4WhgOXa9ATvRelik_WMAO0d/view?usp=share_link" width="420" frameBorder="0" class="giphy-embed" allowFullScreen /> |
+|<img src="https://drive.google.com/file/d/1_9MeqzsRwzAMEfgVG6DYsn7ZKMYtwS0h/view?usp=share_link" width="420" /> | <img src="https://drive.google.com/file/d/1-QtIt1Bsb4WhgOXa9ATvRelik_WMAO0d/view?usp=share_link" width="420" /> |
 
 | Human vs Human   | Human vs AI (AI is controlling black)  |
 |:----------------------|:------------------|
-|<img src="https://drive.google.com/file/d/1-dIbadCR_qVwcq-nw0t0WhULuGN1t3a5/view?usp=share_link" width="420"  frameBorder="0" class="giphy-embed" allowFullScreen /> | <img src="[https://media.giphy.com/media/YNZ1U9FB1VM9KDmdsG/giphy.gif](https://drive.google.com/file/d/1uCXv37W7XtssM-y5RsmXpsv-VnbMzxmR/view?usp=share_link)" width="420" frameBorder="0" class="giphy-embed" allowFullScreen /> |
+|<img src="https://drive.google.com/file/d/1-dIbadCR_qVwcq-nw0t0WhULuGN1t3a5/view?usp=share_link" width="420"   /> | <img src="[https://media.giphy.com/media/YNZ1U9FB1VM9KDmdsG/giphy.gif](https://drive.google.com/file/d/1uCXv37W7XtssM-y5RsmXpsv-VnbMzxmR/view?usp=share_link)" width="420" /> |
 
 ## Installation
 
