@@ -6,6 +6,7 @@ This is a real-time chat application made using React and Redux as frontend, and
 
 <a name="demo"></a>
 ## Demo
+<p align="center">
 | Authentication Page  |
 |:----------------------|
 |<img src="https://drive.google.com/uc?export=view&id=1_9MeqzsRwzAMEfgVG6DYsn7ZKMYtwS0h" width="600" height="100%"/> |
@@ -13,6 +14,8 @@ This is a real-time chat application made using React and Redux as frontend, and
 | Main Chat Desktop View |
 |:----------------------|
 <img src="https://drive.google.com/uc?export=view&id=1-QtIt1Bsb4WhgOXa9ATvRelik_WMAO0d" width="600" height="100%"/> |
+
+</p>
 
 
 | Main Chat Mobile View Contacts   |  Main Chat Mobile View Chat  |
