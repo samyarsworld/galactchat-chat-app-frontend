@@ -8,7 +8,7 @@ This is a real-time chat application made using React and Redux as frontend, and
 ## Demo
 
 GUI of the main part of the app:
-<p align="center"><img src="https://drive.google.com/uc?export=view&id=1MJxKI6HOlo_Xy9IIfSEo4_4oMedodBbW" width="900"/>
+<p align="center"><img src="https://drive.google.com/uc?export=view&id=1WFFYPU09P_l7UV95VEU0KTEqnTNJ7_MW" width="900"/>
 </p>
 
 | Authentication Page  |
