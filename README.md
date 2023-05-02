@@ -1,8 +1,28 @@
-
-
 # Project Title: Real-time Chat Application
 
+### To use the application, head to https://galactchat.netlify.app/ and register. Welcome to the Galact Chat.
+
+
+## Index
+1. [About](#about)
+2. [Demo](#demo)
+3. [Technologies](#tech)
+4. [Usage](#usage)
+    * [Installation](#installation)
+    * [In the Webapp](#webapp)
+5. [Developer Features](#dev)
+6. [Future Improvements](#future)
+    * [Frontend](#front)
+    * [Backend](#back)
+7. [Credits](#credits) 
+8. [License](#license)
+ 
+
+<a name="about"></a>
+## About
+
 This is a real-time chat application made using React and Redux as frontend, and Node.js, MongoDB Atlas as backend. Socket.io library is used for real-time data exchange. The project includes an authentication page with registry that in addition to normal register and login info, it has a section to create AI-made pictures for your profile picture using Open AI DallE. Also, files are stored in Cloudinary cloud storage. The chat includes all chat functionality like real-time typing, notifications, messages, image message, emojis, last seen, seen, or delivered notification, and media storage for each chat.
+
 
 <a name="demo"></a>
 ## Demo
@@ -17,14 +37,31 @@ This is a real-time chat application made using React and Redux as frontend, and
 
 
 
-
 | Main Chat Mobile View Contacts  | &nbsp;&nbsp;&nbsp; |  Main Chat Mobile View Chat  |
 |:--------:|:-------------:|:--------:|
 |<img src="https://drive.google.com/uc?export=view&id=1-dIbadCR_qVwcq-nw0t0WhULuGN1t3a5" style="margin-right: 10px" width="500" height="100%"/> | &nbsp;&nbsp;&nbsp; | <img src="https://drive.google.com/uc?export=view&id=1uCXv37W7XtssM-y5RsmXpsv-VnbMzxmR" width="500" height="100%"/> |
 
 
+<a name="tech"></a>
+## Technologies
+- React.js
+- Redux
+- Node.js
+- MongoDB Atlas
+- Socket.io
+- Open AI DallE
+- Cloudinary
 
-## Installation
+
+<a name="usage"></a>
+### Usage
+
+To use the application, head to https://galactchat.netlify.app/ and register. To use it locally follow the next section.
+
+<a name="installation"></a>
+### Installation
+
+To install Galactic Social Network on your local computer, you need to:
 
 1. Clone the repository to your local machine.
 
@@ -64,7 +101,13 @@ This is a real-time chat application made using React and Redux as frontend, and
 
    This will start the frontend and backend servers.
 
-## Features
+
+### In the Webapp
+<a name="webapp"></a>
+
+
+<a name="dev"></a>
+## Developer Features
 
 - User authentication and authorization with registration and login pages.
 - AI-made profile picture generation using Open AI DallE.
@@ -73,19 +116,12 @@ This is a real-time chat application made using React and Redux as frontend, and
 - Last seen, seen, or delivered notifications.
 - File storage using Cloudinary cloud storage.
 
-## Technologies
 
-- React.js
-- Redux
-- Node.js
-- MongoDB Atlas
-- Socket.io
-- Open AI DallE
-- Cloudinary
-
-## Contributors
+## Credits
 
 - SAMYAR FARJAM (https://github.com/samyarsworld)
+
+If you'd like to contribute to GalacticChat, please feel free to submit a pull request or open an issue on our [GitHub repository](https://github.com/samyarsworld/galactchat-chat-app-backend). We welcome all contributions and feedback.
 
 ## License
 
