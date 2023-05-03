@@ -136,7 +136,7 @@ Once you're logged in, you'll see a list of all the people you've previously con
 
 On the right-hand side of the screen, you'll see the profile information for the friend you're chatting with, as well as a media-sharing section that includes all the media files you've sent or received from that specific user.
 
-### Responsive Design
+#### Responsive Design
 
 The app is fully responsive, meaning you can use it on any device. The layout is optimized for both desktop and mobile screens, so you'll always have a great user experience no matter how you access the app.
 
@@ -168,6 +168,35 @@ When you're finished using the app, simply click the "Logout" button on the top 
 
 - **UI Icons and Components From Various Libraries:** The app's UI is made more attractive using various icons and components from libraries such as `react-icons`, `react-spinners`, and `moment`.
 
+<a name="future"></a>
+## Future Improvements
+<a name="front"></a>
+### Frontend
+There are several ways that user experience could be improved in the future. Here are a few suggestions:
+
+**Customizable User Profile**: Allow users to edit their profile information and customize their settings according to their preferences.
+
+**Custom Themes**: Introduce different color themes and dark mode options for the chat app to provide a more personalized experience for the users.
+
+**GIF and Emoji Support**: Expand the variety of visual messages available by incorporating GIF and more emojis into the chat app.
+
+<a name="back"></a>
+### Backend
+There are several additional feature that can be added to improved the usage of the app in the future. Here are a few suggestions:
+
+- **Premium Cloud Service for Better Database Efficiency**: The app's database can be improved by using a more premium and paid cloud service provider, which can result in faster and more reliable data storage and retrieval.
+- 
+- **Adding Friends and Follow Functionality**: Enhance user experience by allowing them to add friends and follow different users on the platform.
+- 
+- **Improved Message Search**: Add the ability to search through messages in addition to searching usernames to easily find specific information.
+- 
+- **WebRTC-based Video and Voice Calling**: Enable users to make video and voice calls within the app using WebRTC technology for a more integrated experience.
+- 
+- **AI Chatbot Integration**: Incorporate an AI-powered chatbot to provide users with automated assistance and support with their queries.
+- 
+- **Message Deletion Functionality**: Allow users to delete messages for better control over their conversation history.
+- 
+- **Group Chat Functionality**: Enhance the social aspect of the app by adding group chat functionality, where multiple users can participate in a conversation at the same time.
 
 ## Credits
 
