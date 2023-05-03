@@ -121,19 +121,18 @@ To install Galactic Social Network on your local computer, you need to:
 
 ### In the Webapp
 <a name="webapp"></a>
-# Chat App
 
 Welcome to our Chat App, an easy-to-use platform for real-time messaging with your friends and contacts. Our app offers the following features:
 
-### User Registration and Profile Management
+#### User Registration and Profile Management
 
 To get started, simply register an account and create your profile. You can select an image from your local computer or use our AI-driven image generator. Just describe what you're imagining and the AI will create an image for you.
 
-### Real-Time Messaging
+#### Real-Time Messaging
 
 Once you're logged in, you'll see a list of all the people you've previously connected with on the left-hand side of the screen. Simply click on a user to start a conversation with them. The chat interface is located in the middle of the screen, and you can send text messages, upload pictures, or add fun emojis to your messages.
 
-### Media Sharing
+#### Media Sharing
 
 On the right-hand side of the screen, you'll see the profile information for the friend you're chatting with, as well as a media-sharing section that includes all the media files you've sent or received from that specific user.
 
@@ -141,7 +140,7 @@ On the right-hand side of the screen, you'll see the profile information for the
 
 The app is fully responsive, meaning you can use it on any device. The layout is optimized for both desktop and mobile screens, so you'll always have a great user experience no matter how you access the app.
 
-### Logout
+#### Logout
 
 When you're finished using the app, simply click the "Logout" button on the top left-hand side of the screen to end your session.
 
