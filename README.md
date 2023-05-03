@@ -49,7 +49,7 @@ This is a real-time chat application made using React and Redux as frontend, and
 - Node.js
 - MongoDB Atlas
 - Socket.io
-- Open AI DallE
+- Open AI Dall-E
 - Cloudinary
 
 
