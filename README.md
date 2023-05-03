@@ -7,15 +7,14 @@
 1. [About](#about)
 2. [Demo](#demo)
 3. [Technologies](#tech)
-4. [Usage](#usage)
-    * [Installation](#installation)
-    * [In the Webapp](#webapp)
-5. [Developer Features](#dev)
-6. [Future Improvements](#future)
+4. [Usage and Installation](#installation)
+5. [In the Webapp](#usage)
+6. [Developer Features](#dev)
+7. [Future Improvements](#future)
     * [Frontend](#front)
     * [Backend](#back)
-7. [Credits](#credits) 
-8. [License](#license)
+8. [Credits](#credits) 
+9. [License](#license)
  
 
 <a name="about"></a>
@@ -60,13 +59,11 @@ This is a real-time chat application made using React and Redux as frontend, and
 - cookies
 
 
-<a name="usage"></a>
-### Usage
+<a name="installation"></a>
+## Usage and Installation
 
 To use the application, head to https://galactchat.netlify.app/ and register. To use it locally follow the next section.
 
-<a name="installation"></a>
-### Installation
 
 To install Galactic Social Network on your local computer, you need to:
 
@@ -119,8 +116,8 @@ To install Galactic Social Network on your local computer, you need to:
    This will start the frontend and backend servers.
 
 
-### In the Webapp
-<a name="webapp"></a>
+<a name="usage"></a>
+## In the Webapp
 
 Welcome to our Chat App, an easy-to-use platform for real-time messaging with your friends and contacts. Our app offers the following features:
 
