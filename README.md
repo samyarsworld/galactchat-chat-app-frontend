@@ -149,23 +149,14 @@ When you're finished using the app, simply click the "Logout" button on the top 
 ## Developer Features
 
 - **Scalable State Management with Redux and Redux Thunk:** State management is done efficiently and effectively by using Redux and Redux Thunk libraries. This provides a better architecture and a single source of truth for state. React hooks such as `useRef`, `useEffect`, and `useState` are used to update the state.
-
 - **Secure User Authentication and Authorization:** Users can securely register and log in with their credentials. The authentication middleware and cookies check for previous logins with the help of the `jsonwebtoken` library. The registration process is secured using the `bcrypt`, `jsonwebtoken`, and `validator` libraries.
-
 - **Server Information Displayed Using Toasts:** Users are provided with server information using toasts and toaster components to make the user experience better.
-
 - **AI-Generated Profile Pictures Using OpenAI DallE:** An AI-powered image generator using OpenAI DallE is used to create profile pictures for users who do not want to upload their own picture.
-
 - **Real-Time Chat Functionality with Typing Indicators and Notifications:** Chat functionality is implemented in real-time, complete with typing indicators, notifications, and last seen, seen, or delivered notifications using sockets and the `socket.io` library. React `useEffect` hook is also used for efficient state updates.
-
 - **Sound Notifications and Emoji Support:** Users are notified of new messages with sound notifications, and emojis are supported for more expressive communication.
-
 - **Saving Media with Cloudinary Cloud Storage:** Media files are saved using Cloudinary cloud storage for efficient file storage.
-
 - **Safe Data Storage Using MongoDB Atlas and Mongoose:** Meta data, messages, and users are stored safely in MongoDB Atlas using the Mongoose library.
-
 - **Secure Data Transfer Using Axios and Redux Actions:** Data is securely transferred from the frontend to the backend using the Axios library through Redux actions.
-
 - **UI Icons and Components From Various Libraries:** The app's UI is made more attractive using various icons and components from libraries such as `react-icons`, `react-spinners`, and `moment`.
 
 <a name="future"></a>
@@ -174,28 +165,19 @@ When you're finished using the app, simply click the "Logout" button on the top 
 ### Frontend
 There are several ways that user experience could be improved in the future. Here are a few suggestions:
 
-**Customizable User Profile**: Allow users to edit their profile information and customize their settings according to their preferences.
-
-**Custom Themes**: Introduce different color themes and dark mode options for the chat app to provide a more personalized experience for the users.
-
-**GIF and Emoji Support**: Expand the variety of visual messages available by incorporating GIF and more emojis into the chat app.
+- **Customizable User Profile**: Allow users to edit their profile information and customize their settings according to their preferences.
+- **Custom Themes**: Introduce different color themes and dark mode options for the chat app to provide a more personalized experience for the users.
+- **GIF and Emoji Support**: Expand the variety of visual messages available by incorporating GIF and more emojis into the chat app.
 
 <a name="back"></a>
 ### Backend
 There are several additional feature that can be added to improved the usage of the app in the future. Here are a few suggestions:
-
 - **Premium Cloud Service for Better Database Efficiency**: The app's database can be improved by using a more premium and paid cloud service provider, which can result in faster and more reliable data storage and retrieval.
-- 
 - **Adding Friends and Follow Functionality**: Enhance user experience by allowing them to add friends and follow different users on the platform.
-- 
 - **Improved Message Search**: Add the ability to search through messages in addition to searching usernames to easily find specific information.
-- 
 - **WebRTC-based Video and Voice Calling**: Enable users to make video and voice calls within the app using WebRTC technology for a more integrated experience.
-- 
 - **AI Chatbot Integration**: Incorporate an AI-powered chatbot to provide users with automated assistance and support with their queries.
-- 
 - **Message Deletion Functionality**: Allow users to delete messages for better control over their conversation history.
-- 
 - **Group Chat Functionality**: Enhance the social aspect of the app by adding group chat functionality, where multiple users can participate in a conversation at the same time.
 
 ## Credits
