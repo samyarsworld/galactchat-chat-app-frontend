@@ -18,7 +18,6 @@ const userRegister = (data) => {
         "Content-Type": "application/json",
       },
     };
-
     try {
       const response = await axios.post(
         `${URL}/api/chat/user-register`,

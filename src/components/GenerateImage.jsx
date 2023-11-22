@@ -10,7 +10,7 @@ const GenerateImage = ({
   genLoading,
 }) => {
   const initImg =
-    "https://res.cloudinary.com/dizjm7yrb/image/upload/v1679970425/profile_img/q54lfqacbozd9l2pykld.png";
+    "https://res.cloudinary.com/dizjm7yrb/image/upload/v1700612538/profile_img/zvmvsug7cbuty3qguz2o.png";
 
   return (
     <div className="card generate">

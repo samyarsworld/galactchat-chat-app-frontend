@@ -1,9 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-// import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useAlert } from "react-alert";
-import { ERROR_CLEAR } from "../store/actionTypes/authType";
-
 import axios from "axios";
 
 import { userLogin, userRegister } from "../store/actions/authAction";
@@ -13,12 +9,10 @@ const URL = "https://galactchat.onrender.com";
 // const URL = "http://localhost:5000";
 
 const Auth = () => {
-  // const navigate = useNavigate();
-  const alert = useAlert();
   const dispatch = useDispatch();
 
   const initImg =
-    "https://res.cloudinary.com/dizjm7yrb/image/upload/v1679970425/profile_img/q54lfqacbozd9l2pykld.png";
+    "https://res.cloudinary.com/dizjm7yrb/image/upload/v1700612538/profile_img/zvmvsug7cbuty3qguz2o.png";
 
   const initialState = {
     username: "",
@@ -30,30 +24,18 @@ const Auth = () => {
   };
 
   const [isRegister, setIsRegister] = useState(true);
-  const { authenticate, error, userInfo } = useSelector((state) => state.auth);
   const [userAuthState, setUserAuthState] = useState(initialState);
   const [userImage, setUserImage] = useState(initImg);
   const [genImagePrompt, setGenImagePrompt] = useState("");
   const [genLoading, setGenLoading] = useState(false);
   const [genImage, setGenImage] = useState("");
 
-  // Check if user is authenticated
-  // useEffect(() => {
-  //   if (authenticate) {
-  //     navigate("/");
-  //   }
-  //   if (error) {
-  //     error.map((err) => alert.error(err));
-  //     dispatch({ type: ERROR_CLEAR });
-  //   }
-  // }, [error, authenticate]);
-
-  // Input handle for text fileds
+  // Input handle for text fields
   const handleChange = (e) => {
     setUserAuthState({ ...userAuthState, [e.target.name]: e.target.value });
   };
 
-  // Input handle for file fileds
+  // Input handle for file fields
   const handleFileChange = (e) => {
     if (e.target.files.length !== 0) {
       const reader = new FileReader();
@@ -93,6 +75,7 @@ const Auth = () => {
           data,
           config
         );
+
         const genImg = response.data.genImg;
 
         setUserAuthState({
@@ -116,21 +99,51 @@ const Auth = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const button_name = e.nativeEvent.submitter.name;
+
     if (!isRegister) {
       dispatch(userLogin(userAuthState));
     } else {
-      const { username, email, password, confirmPassword, genImage, image } =
-        userAuthState;
+      if (button_name === "guest1") {
+        setUserAuthState({
+          ...userAuthState,
+          email: "guest1@gmail.com",
+          password: "00000000sS@",
+        });
+        dispatch(
+          userLogin({
+            ...userAuthState,
+            email: "guest1@gmail.com",
+            password: "00000000sS@",
+          })
+        );
+      } else if (button_name === "guest2") {
+        setUserAuthState({
+          ...userAuthState,
+          email: "guest2@gmail.com",
+          password: "00000000sS@",
+        });
+        dispatch(
+          userLogin({
+            ...userAuthState,
+            email: "guest2@gmail.com",
+            password: "00000000sS@",
+          })
+        );
+      } else {
+        const { username, email, password, confirmPassword, genImage, image } =
+          userAuthState;
 
-      const img = image || genImage;
+        const img = image || genImage;
 
-      const formData = new FormData();
-      formData.append("username", username);
-      formData.append("email", email);
-      formData.append("password", password);
-      formData.append("confirmPassword", confirmPassword);
-      formData.append("image", img);
-      dispatch(userRegister(formData));
+        const formData = new FormData();
+        formData.append("username", username);
+        formData.append("email", email);
+        formData.append("password", password);
+        formData.append("confirmPassword", confirmPassword);
+        formData.append("image", img);
+        dispatch(userRegister(formData));
+      }
     }
   };
 
@@ -187,7 +200,7 @@ const Auth = () => {
                   onChange={handleChange}
                   value={userAuthState.confirmPassword}
                   name="confirmPassword"
-                  placeholder="Confirm"
+                  placeholder="Confirm Password"
                   id="confirmPassword"
                 />
               </div>
@@ -224,10 +237,43 @@ const Auth = () => {
               </div>
             )}
 
+            {isRegister && (
+              <div className="form-group">
+                <p style={{ color: "white", fontSize: 12 }}>
+                  *login via two accounts to see the real-time features of the
+                  app. You can use private (incognito) for the second login.
+                </p>
+              </div>
+            )}
+
+            {isRegister && (
+              <div className="form-group">
+                <input
+                  type="submit"
+                  value="Sign In as Guest 1"
+                  className="btn"
+                  name="guest1"
+                  style={{ backgroundColor: "#168aad" }}
+                />
+              </div>
+            )}
+            {isRegister && (
+              <div className="form-group">
+                <input
+                  type="submit"
+                  value="Sign In as Guest 2"
+                  name="guest2"
+                  className="btn"
+                  style={{ backgroundColor: "#52b69a" }}
+                />
+              </div>
+            )}
+
             <div className="form-group">
               <input
                 type="submit"
                 value={isRegister ? "Register" : "login"}
+                name="sign"
                 className="btn"
               />
             </div>
@@ -243,6 +289,7 @@ const Auth = () => {
           </form>
         </div>
       </div>
+
       {isRegister && (
         <GenerateImage
           genImagePrompt={genImagePrompt}
