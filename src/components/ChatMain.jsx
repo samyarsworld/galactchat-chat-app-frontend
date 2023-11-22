@@ -3,6 +3,8 @@ import ReactDOM from "react-dom";
 import toast, { Toaster } from "react-hot-toast";
 import { io } from "socket.io-client";
 
+import HashLoader from "react-spinners/HashLoader";
+
 import useSound from "use-sound";
 import notificationSound from "../audio/notification.mp3";
 import sendingSound from "../audio/sending.mp3";
@@ -376,25 +378,31 @@ const ChatMain = () => {
             </div>
 
             <div className="friends">
-              {friends && friends.length > 0
-                ? friends.map((friend) => (
-                    <div
-                      className={
-                        currentFriend._id === friend.friendInfo._id
-                          ? "hover-friend active"
-                          : "hover-friend"
-                      }
-                      key={friend.friendInfo._id}
-                      onClick={() => setCurrentFriend(friend.friendInfo)}
-                    >
-                      <Friend
-                        friend={friend}
-                        userInfo={userInfo}
-                        onlineFriends={onlineFriends}
-                      />
-                    </div>
-                  ))
-                : "No Friend"}
+              {friends && friends.length > 0 ? (
+                friends.map((friend) => (
+                  <div
+                    className={
+                      currentFriend._id === friend.friendInfo._id
+                        ? "hover-friend active"
+                        : "hover-friend"
+                    }
+                    key={friend.friendInfo._id}
+                    onClick={() => setCurrentFriend(friend.friendInfo)}
+                  >
+                    <Friend
+                      friend={friend}
+                      userInfo={userInfo}
+                      onlineFriends={onlineFriends}
+                    />
+                  </div>
+                ))
+              ) : (
+                <HashLoader
+                  className="loaderFriends"
+                  color={"#f97f00"}
+                  size={60}
+                />
+              )}
             </div>
           </div>
 

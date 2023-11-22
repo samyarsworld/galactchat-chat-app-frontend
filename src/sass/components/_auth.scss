@@ -7,6 +7,7 @@
   justify-content: center;
   align-items: center;
   .card {
+    position: relative;
     background-color: #0345b7;
     border-radius: 5mm;
     .card-header {
@@ -82,21 +83,42 @@
   width: 300px !important;
   margin: 20px 0 20px 20px;
   .generate-img {
-    margin-top: 10px;
-    margin-bottom: 5px;
+    background-color: #4a0251;
+    margin-top: 9px;
+    margin-bottom: 9px;
     width: 256px;
     height: 256px;
+    position: relative;
+    .generate-img-loader {
+      position: absolute;
+      left: 90px;
+      top: 87px;
+    }
   }
+
   .genInput:focus {
     outline: none;
     box-shadow: 0 0 10px #00ff00;
   }
 }
 
+.loaderLogin {
+  position: absolute;
+  top: 50px;
+  left: 140px;
+}
+
+.loaderRegister {
+  position: absolute;
+  top: 140px;
+  left: 135px;
+  z-index: 100;
+}
+
 @media only screen and (max-width: 700px) {
   .register {
     flex-direction: column;
-    padding-top: 40px;
+    padding-top: 100px;
     padding-bottom: 40px;
     height: 100%;
   }
@@ -105,19 +127,19 @@
   }
 }
 
-.loader {
-  margin-left: 100px;
-  margin-top: 80px;
-  width: 50px;
-  height: 50px;
-  margin-right: 2px;
-  color: #cccccc;
-  animation: spin 1s linear infinite;
-  fill: #6469ff81;
-}
+// .loader {
+//   margin-left: 100px;
+//   margin-top: 80px;
+//   width: 50px;
+//   height: 50px;
+//   margin-right: 2px;
+//   color: #cccccc;
+//   animation: spin 1s linear infinite;
+//   fill: #6469ff81;
+// }
 
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
+// @keyframes spin {
+//   to {
+//     transform: rotate(360deg);
+//   }
+// }

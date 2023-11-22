@@ -1,5 +1,5 @@
 import React from "react";
-import GenLoader from "./GenLoader";
+import PacmanLoader from "react-spinners/PacmanLoader";
 
 const GenerateImage = ({
   genRef,
@@ -37,7 +37,11 @@ const GenerateImage = ({
         <div>
           {genLoading ? (
             <div className="generate-img">
-              <GenLoader />
+              <PacmanLoader
+                className="generate-img-loader"
+                color={"#d636d0"}
+                size={30}
+              />
             </div>
           ) : (
             <img className="generate-img" src={genImage ? genImage : initImg} />
