@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import ClipLoader from "react-spinners/ClipLoader";
 
 import { userLogin, userRegister } from "../store/actions/authAction";
 import GenerateImage from "./GenerateImage";
@@ -29,6 +30,7 @@ const Auth = () => {
   const [genImagePrompt, setGenImagePrompt] = useState("");
   const [genLoading, setGenLoading] = useState(false);
   const [genImage, setGenImage] = useState("");
+  const [submitLoading, setSubmitLoading] = useState(false);
 
   // Input handle for text fields
   const handleChange = (e) => {
@@ -100,7 +102,7 @@ const Auth = () => {
     e.preventDefault();
 
     const button_name = e.nativeEvent.submitter.name;
-
+    setSubmitLoading(true);
     if (!isRegister) {
       dispatch(userLogin(userAuthState));
     } else {
@@ -145,11 +147,39 @@ const Auth = () => {
         dispatch(userRegister(formData));
       }
     }
+    setSubmitLoading(false);
   };
 
   return (
     <div className={isRegister ? "register" : "register login"}>
-      <div className="card">
+      <div className="card" style={{ position: "relative" }}>
+        {submitLoading && (
+          <p
+            style={{
+              position: "absolute",
+              top: "-60px",
+              left: "-9%",
+              width: "120%",
+              fontSize: "20px",
+              textAlign: "center",
+              color: "grey",
+              fontWeight: "bold",
+            }}
+          >
+            Due to compute limitations, your first login will take about 1min to
+            connect to the server.
+          </p>
+        )}
+        {submitLoading && (
+          <div style={{ position: "absolute", top: "35%", left: "37%" }}>
+            <ClipLoader
+              className="generate-img-loader"
+              color="#fff"
+              size={100}
+            />
+            <h1></h1>
+          </div>
+        )}
         <div className="card-header">
           <h3>{isRegister ? "Create your account" : "Login"}</h3>
         </div>
@@ -290,7 +320,7 @@ const Auth = () => {
         </div>
       </div>
 
-      {isRegister && (
+      {/* {isRegister && (
         <GenerateImage
           genImagePrompt={genImagePrompt}
           setGenImagePrompt={setGenImagePrompt}
@@ -299,7 +329,7 @@ const Auth = () => {
           getImageFromOpenAi={getImageFromOpenAi}
           genLoading={genLoading}
         />
-      )}
+      )} */}
     </div>
   );
 };
