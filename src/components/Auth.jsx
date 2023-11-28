@@ -2,14 +2,16 @@ import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import ClipLoader from "react-spinners/ClipLoader";
-
+import { useAlert } from "react-alert";
 import { userLogin, userRegister } from "../store/actions/authAction";
 import GenerateImage from "./GenerateImage";
+import { ERROR_CLEAR } from "../store/actionTypes/authType";
 
 const URL = "https://galactchat.onrender.com";
 // const URL = "http://localhost:5000";
 
 const Auth = () => {
+  const alert = useAlert();
   const dispatch = useDispatch();
 
   const initImg =
@@ -23,7 +25,7 @@ const Auth = () => {
     genImage: "",
     image: initImg,
   };
-
+  const { authenticate, error, userInfo } = useSelector((state) => state.auth);
   const [isRegister, setIsRegister] = useState(true);
   const [userAuthState, setUserAuthState] = useState(initialState);
   const [userImage, setUserImage] = useState(initImg);
@@ -36,6 +38,15 @@ const Auth = () => {
   const handleChange = (e) => {
     setUserAuthState({ ...userAuthState, [e.target.name]: e.target.value });
   };
+
+  // Check if user is authenticated
+  useEffect(() => {
+    setSubmitLoading(false);
+    if (error) {
+      error.map((err) => alert.error(err));
+      dispatch({ type: ERROR_CLEAR });
+    }
+  }, [error, authenticate]);
 
   // Input handle for file fields
   const handleFileChange = (e) => {
@@ -147,7 +158,6 @@ const Auth = () => {
         dispatch(userRegister(formData));
       }
     }
-    setSubmitLoading(false);
   };
 
   return (
