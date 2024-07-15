@@ -1,0 +1,93 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+  }
+  
+  html,
+  body {
+    scroll-behavior: smooth;
+  }
+  
+  :root {
+    --chat-bg-color: #dad3fd;
+    --text-white: #fff;
+    --main-bg-color: #fff;
+    --text-color: #050505;
+    --icon-bg-color: #f5f5f5;
+    --icon-color: #414141;
+    --search-bg: #eff2f61a;
+    --current-fd-bg-color: #6b2ca5;
+    --border-color: #e5e5e5;
+    --message-icon-color: #0099ff;
+    --friend-last-message-color: rgb(222, 202, 177);
+    --header-color: #bb76fc;
+    --unseen-received-msg-bg-color: #1d10aa;
+    --header-bg-color: #363b4e;
+    --sidebar-bg-color: #4f3b78;
+    --small-view-border-bg-color: rgb(143, 13, 143);
+    --friend-bg-hover-color: #0277bd;
+    --friend-info-bg-color: #4f3b78;
+    --auth-bg-color: radial-gradient(
+      circle farthest-corner at 10% 20%,
+      rgba(100, 43, 115, 1) 0%,
+      rgba(4, 0, 4, 1) 90%
+    );
+  
+    --user-message-bg-color: #8d3cda;
+    --fd-message-bg-color: #e5e5e5;
+    --user-message-color: #fff;
+    --fd-message-color: #050505;
+  
+    --image-border-color: rgb(155, 153, 153);
+    --active-icon-color: #5ad539;
+  }
+  
+  body {
+    background-color: var(--main-bg-color);
+    font-family: "Roboto", sans-serif;
+  }
+  
+  a {
+    text-decoration: none;
+  }
+  li {
+    list-style: none;
+  }
+  
+
+.card{
+    width: 375px;
+    padding: 15px 20px;
+}
+.form-group{
+    margin: 10px 0px;
+    display: flex;
+    flex-direction: column;
+}
+.form-control{
+    padding: 12px;
+    border: none;
+    outline: none;
+    background-color: #0a0e1585;
+    &::placeholder{
+        color: #fff;
+        font-weight: 400;
+    }
+}
+
+label{
+    margin-bottom: 5px;
+    color: #fff;
+    font-weight: 500;
+}
+.btn{
+    outline: none;
+    color: #fff;
+    text-transform: uppercase;
+    padding: 12px;
+    text-align: center;
+    background-color: #101a23eb;
+    border: none;
+    cursor: pointer;
+}

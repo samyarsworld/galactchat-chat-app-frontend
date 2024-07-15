@@ -1,13 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import ReactDOM from "react-dom";
-import toast, { Toaster } from "react-hot-toast";
 import { io } from "socket.io-client";
 
 import HashLoader from "react-spinners/HashLoader";
-
-import useSound from "use-sound";
-import notificationSound from "../audio/notification.mp3";
-import sendingSound from "../audio/sending.mp3";
 
 import Sidebar from "./Sidebar";
 import FriendInfo from "./FriendInfo";
@@ -43,11 +38,8 @@ const ChatMain = () => {
   const scrollRef = useRef();
   const socket = useRef();
 
-  const [notifySound] = useSound(notificationSound);
-  const [sendSound] = useSound(sendingSound);
-
-  const URL = "https://galactchat.onrender.com";
-  // const URL = "http://localhost:5000";
+  // const URL = "https://galactchat.onrender.com";
+  const URL = "http://localhost:5000";
 
   // Socket setup
   useEffect(() => {
@@ -157,8 +149,6 @@ const ChatMain = () => {
       socketMessage.senderId !== currentFriend._id &&
       socketMessage.receiverId === userInfo.id
     ) {
-      notifySound();
-      toast.success(`New message from ${socketMessage.senderName}`);
       dispatch(updateMessage(socketMessage));
       socket.current.emit("messageDelivered", socketMessage);
       dispatch({
@@ -187,7 +177,6 @@ const ChatMain = () => {
   const sendMessage = (e) => {
     e.preventDefault();
 
-    sendSound();
     if (newMessage) {
       const data = {
         senderName: userInfo.username,
@@ -264,7 +253,6 @@ const ChatMain = () => {
   // Add image as message
   const sendImage = (e) => {
     if (e.target.files.length !== 0) {
-      sendSound();
 
       const reader = new FileReader();
       reader.readAsDataURL(e.target.files[0]);
@@ -333,16 +321,6 @@ const ChatMain = () => {
 
   return (
     <div className="messenger">
-      <Toaster
-        position={"top-right"}
-        reverseOrder={false}
-        toastOptions={{
-          style: {
-            fontSize: "18px",
-          },
-        }}
-      />
-
       <div className="main">
         <Sidebar logout={logout} />
         <div className="left-side open" style={toggleLeft}>

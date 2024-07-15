@@ -1,5 +1,5 @@
 import * as actions from "../actionTypes/authType";
-import deCodeToken from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 const authState = {
   authenticate: false,
@@ -9,7 +9,8 @@ const authState = {
 };
 
 const tokenDecode = (token) => {
-  const tokenDecoded = deCodeToken(token);
+  const tokenDecoded = jwtDecode(token);
+  
   const expTime = new Date(tokenDecoded.exp * 1000);
   if (new Date() > expTime) {
     return null;

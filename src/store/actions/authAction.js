@@ -7,8 +7,8 @@ import {
   LOGOUT_SUCCESS,
 } from "../actionTypes/authType";
 
-const URL = "https://galactchat.onrender.com";
-// const URL = "http://localhost:5000";
+// const URL = "https://galactchat.onrender.com";
+const URL = "http://localhost:8080";
 
 const userRegister = (data) => {
   return async (dispatch) => {
@@ -18,9 +18,10 @@ const userRegister = (data) => {
         "Content-Type": "application/json",
       },
     };
+
     try {
       const response = await axios.post(
-        `${URL}/api/chat/user-register`,
+        `${URL}/api/chat/register`,
         data,
         config
       );
@@ -38,7 +39,7 @@ const userRegister = (data) => {
         type: REGISTER_FAIL,
         payload: {
           error: error.response.data.error.errorMessage,
-        },
+        }
       });
     }
   };

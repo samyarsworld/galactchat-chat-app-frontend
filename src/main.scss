@@ -1,6 +1,5 @@
-@import "./sass/base/reset";
+@import "./sass/base";
 @import "./sass/components/auth";
-@import "./sass/utils/utils";
 @import "./sass/components/chatMain";
 @import "./sass/components/activeFriend";
 @import "./sass/components/friend";
@@ -8,3 +7,6 @@
 @import "./sass/components/message";
 @import "./sass/components/sendMessage";
 @import "./sass/components/friendInfo";
+
+@import "./sass/components/solar";
+

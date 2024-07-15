@@ -1,8 +1,7 @@
 .messenger {
   width: 100%;
   height: 100vh;
-  background-color: var(--bg-color);
-  // height: 100%;
+  background-color: var(--chat-bg-color);
   .main {
     z-index: 1;
     width: 100%;
@@ -128,7 +127,7 @@
     cursor: pointer;
 
     .icon-inner {
-      color: #4a148c;
+      color: var(--chat-bg-color);
       font-family: Helvetica Neue, sans-serif;
       height: 100%;
       display: flex;

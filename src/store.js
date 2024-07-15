@@ -1,5 +1,5 @@
 import { createStore, compose, combineReducers, applyMiddleware } from "redux";
-import {thunk} from "redux-thunk";
+import thunkMiddleware from "redux-thunk";
 
 import { authReducer } from "./reducers/authReducer";
 import { chatReducer } from "./reducers/chatReducer";
@@ -9,7 +9,7 @@ const rootReducer = combineReducers({
   chat: chatReducer,
 });
 
-const middleware = [thunk];
+const middleware = [thunkMiddleware];
 
 const store = createStore(
   rootReducer,

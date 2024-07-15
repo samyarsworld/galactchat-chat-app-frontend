@@ -1,5 +1,4 @@
 import React from "react";
-import { FaPhoneAlt, FaVideo, FaRocketchat } from "react-icons/fa";
 import Message from "./Message";
 import SendMessage from "./SendMessage";
 import FriendInfo from "./FriendInfo";
@@ -33,20 +32,6 @@ const MessageArea = ({
             </div>
             <div className="name">
               <h3>{currentFriend.username} </h3>
-            </div>
-          </div>
-
-          <div className="icons">
-            <div className="icon">
-              <FaPhoneAlt />
-            </div>
-
-            <div className="icon">
-              <FaVideo />
-            </div>
-
-            <div className="icon">
-              <FaRocketchat />
             </div>
           </div>
         </div>

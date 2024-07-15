@@ -1,17 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
 import ClipLoader from "react-spinners/ClipLoader";
-import { useAlert } from "react-alert";
 import { userLogin, userRegister } from "../store/actions/authAction";
-import GenerateImage from "./GenerateImage";
 import { ERROR_CLEAR } from "../store/actionTypes/authType";
 
-const URL = "https://galactchat.onrender.com";
-// const URL = "http://localhost:5000";
+import Solar from "./Solar"
+
+// const URL = "https://galactchat.onrender.com";
+const URL = "http://localhost:5000";
 
 const Auth = () => {
-  const alert = useAlert();
   const dispatch = useDispatch();
 
   const initImg =
@@ -19,34 +17,30 @@ const Auth = () => {
 
   const initialState = {
     username: "",
-    email: "",
     password: "",
     confirmPassword: "",
-    genImage: "",
     image: initImg,
   };
   const { authenticate, error, userInfo } = useSelector((state) => state.auth);
   const [isRegister, setIsRegister] = useState(true);
   const [userAuthState, setUserAuthState] = useState(initialState);
   const [userImage, setUserImage] = useState(initImg);
-  const [genImagePrompt, setGenImagePrompt] = useState("");
-  const [genLoading, setGenLoading] = useState(false);
-  const [genImage, setGenImage] = useState("");
   const [submitLoading, setSubmitLoading] = useState(false);
 
-  // Input handle for text fields
-  const handleChange = (e) => {
-    setUserAuthState({ ...userAuthState, [e.target.name]: e.target.value });
-  };
-
+ 
   // Check if user is authenticated
   useEffect(() => {
     setSubmitLoading(false);
     if (error) {
-      error.map((err) => alert.error(err));
       dispatch({ type: ERROR_CLEAR });
     }
   }, [error, authenticate]);
+
+
+   // Input handle for text fields
+  const handleChange = (e) => {
+    setUserAuthState({ ...userAuthState, [e.target.name]: e.target.value });
+  };
 
   // Input handle for file fields
   const handleFileChange = (e) => {
@@ -58,53 +52,9 @@ const Auth = () => {
         setUserImage(reader.result);
         setUserAuthState({
           ...userAuthState,
-          genImage: "",
           [e.target.name]: reader.result,
         });
       };
-    }
-  };
-
-  // Image generation with DALL-E OpenAI
-  const genRef = useRef(null);
-  const goToGenerate = () => {
-    genRef.current.focus();
-  };
-
-  const getImageFromOpenAi = async (e) => {
-    e.preventDefault();
-    if (genImagePrompt.length > 10) {
-      try {
-        setGenLoading(true);
-        const config = {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        };
-
-        const data = { genImagePrompt: genImagePrompt };
-        const response = await axios.post(
-          `${URL}/api/chat/gen-image`,
-          data,
-          config
-        );
-
-        const genImg = response.data.genImg;
-
-        setUserAuthState({
-          ...userAuthState,
-          genImage: genImg,
-          image: "",
-        });
-        setGenImage(genImg);
-        setUserImage(genImg);
-      } catch (error) {
-        console.log(error.response.data.error.errorMessage);
-      } finally {
-        setGenLoading(false);
-      }
-    } else {
-      console.log("Please enter a prompt with more than 10 characters.");
     }
   };
 
@@ -112,112 +62,47 @@ const Auth = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const button_name = e.nativeEvent.submitter.name;
     setSubmitLoading(true);
     if (!isRegister) {
       dispatch(userLogin(userAuthState));
     } else {
-      if (button_name === "guest1") {
-        setUserAuthState({
-          ...userAuthState,
-          email: "guest1@gmail.com",
-          password: "00000000sS@",
-        });
-        dispatch(
-          userLogin({
-            ...userAuthState,
-            email: "guest1@gmail.com",
-            password: "00000000sS@",
-          })
-        );
-      } else if (button_name === "guest2") {
-        setUserAuthState({
-          ...userAuthState,
-          email: "guest2@gmail.com",
-          password: "00000000sS@",
-        });
-        dispatch(
-          userLogin({
-            ...userAuthState,
-            email: "guest2@gmail.com",
-            password: "00000000sS@",
-          })
-        );
-      } else {
-        const { username, email, password, confirmPassword, genImage, image } =
-          userAuthState;
-
-        const img = image || genImage;
-
+        const { username, email, password, confirmPassword, image } = userAuthState;
         const formData = new FormData();
         formData.append("username", username);
-        formData.append("email", email);
         formData.append("password", password);
         formData.append("confirmPassword", confirmPassword);
-        formData.append("image", img);
+        formData.append("image", image);
         dispatch(userRegister(formData));
-      }
     }
   };
 
   return (
-    <div className={isRegister ? "register" : "register login"}>
+    <div className="register">
+      <Solar />
       <div className="card" style={{ position: "relative" }}>
+        
         {submitLoading && (
-          <p
-            style={{
-              position: "absolute",
-              top: "-60px",
-              left: "-9%",
-              width: "120%",
-              fontSize: "20px",
-              textAlign: "center",
-              color: "grey",
-              fontWeight: "bold",
-            }}
-          >
-            Due to compute limitations, your first login will take about 1min to
-            connect to the server.
-          </p>
-        )}
-        {submitLoading && (
-          <div style={{ position: "absolute", top: "35%", left: "37%" }}>
+          <div className="card-loading">
             <ClipLoader
-              className="generate-img-loader"
               color="#fff"
               size={100}
             />
-            <h1></h1>
           </div>
         )}
-        <div className="card-header">
-          <h3>{isRegister ? "Create your account" : "Login"}</h3>
-        </div>
+
+        <h3 className="card-header">{isRegister ? "Create your account" : "Login"}</h3>
 
         <div className="card-body">
           <form onSubmit={handleSubmit}>
-            {isRegister && (
-              <div className="form-group">
-                <input
-                  type="text"
-                  className="form-control"
-                  onChange={handleChange}
-                  value={userAuthState.username}
-                  name="username"
-                  placeholder="Username"
-                  id="username"
-                />
-              </div>
-            )}
-
             <div className="form-group">
               <input
-                type="email"
+                type="text"
                 className="form-control"
                 onChange={handleChange}
-                value={userAuthState.email}
-                placeholder="Email"
-                name="email"
+                value={userAuthState.username}
+                name="username"
+                placeholder="Username"
+                id="username"
               />
             </div>
 
@@ -248,71 +133,25 @@ const Auth = () => {
             {isRegister && (
               <div className="form-group">
                 <div className="file-image">
-                  <div className="image">
-                    {userImage ? <img src={userImage} alt="avatar" /> : ""}
-                  </div>
+                  <img src={userImage} alt="avatar"/>
                   <div className="select-image">
-                    <div className="file">
-                      <label htmlFor="image">Select Image</label>
-                      <input
-                        type="file"
-                        className="form-control"
-                        onChange={handleFileChange}
-                        name="image"
-                        id="image"
-                      />
-                    </div>
-                    <div className="or">OR</div>
-                    <div className="file">
-                      <label htmlFor="gen-btn">Generate</label>
-                      <button
-                        type="button"
-                        className="form-control"
-                        id="gen-btn"
-                        onClick={goToGenerate}
-                      />
-                    </div>
+                    <label htmlFor="image" style={{fontSize: 13}}>Select Image</label>
+                    <input
+                      type="file"
+                      className="form-control"
+                      onChange={handleFileChange}
+                      name="image"
+                      id="image"
+                    />
                   </div>
                 </div>
-              </div>
-            )}
-
-            {isRegister && (
-              <div className="form-group">
-                <p style={{ color: "white", fontSize: 12 }}>
-                  *login via two accounts to see the real-time features of the
-                  app. You can use private (incognito) for the second login.
-                </p>
-              </div>
-            )}
-
-            {isRegister && (
-              <div className="form-group">
-                <input
-                  type="submit"
-                  value="Sign In as Guest 1"
-                  className="btn"
-                  name="guest1"
-                  style={{ backgroundColor: "#168aad" }}
-                />
-              </div>
-            )}
-            {isRegister && (
-              <div className="form-group">
-                <input
-                  type="submit"
-                  value="Sign In as Guest 2"
-                  name="guest2"
-                  className="btn"
-                  style={{ backgroundColor: "#52b69a" }}
-                />
               </div>
             )}
 
             <div className="form-group">
               <input
                 type="submit"
-                value={isRegister ? "Register" : "login"}
+                value={isRegister ? "register" : "login"}
                 name="sign"
                 className="btn"
               />
@@ -329,17 +168,6 @@ const Auth = () => {
           </form>
         </div>
       </div>
-
-      {/* {isRegister && (
-        <GenerateImage
-          genImagePrompt={genImagePrompt}
-          setGenImagePrompt={setGenImagePrompt}
-          genRef={genRef}
-          genImage={genImage}
-          getImageFromOpenAi={getImageFromOpenAi}
-          genLoading={genLoading}
-        />
-      )} */}
     </div>
   );
 };
